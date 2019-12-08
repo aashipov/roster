@@ -3,16 +3,17 @@ package org.dummy.roster.backend;
 import java.math.BigDecimal;
 import java.util.Currency;
 import org.dummy.roster.backend.entity.Salary;
+import org.dummy.roster.backend.repository.SalaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import org.dummy.roster.backend.entity.Employee;
 import org.dummy.roster.backend.repository.EmployeeRepository;
+
+import static org.junit.Assert.*;
 
 /**
  * {@link Test} {@link EmployeeRepository}.
@@ -37,6 +38,9 @@ public class EmployeeRepositoryTest {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    @Autowired
+    private SalaryRepository salaryRepository;
+
     /**
      * {@link Test} {@link EmployeeRepository#findById(Object)}.
      */
@@ -59,5 +63,9 @@ public class EmployeeRepositoryTest {
         assertEquals("same name", DUMMY_NAME, employee.getName());
         assertNotNull("salary", employee.getSalary());
         assertEquals("currency", Currency.getInstance(CURRENCY), employee.getSalary().getCurrency());
+
+        employeeRepository.delete(employee);
+        assertFalse("employee deleted", employeeRepository.findById(employee.getUuid()).isPresent());
+        assertFalse("salary removed as well", salaryRepository.findById(salary.getUuid()).isPresent());
     }
 }
