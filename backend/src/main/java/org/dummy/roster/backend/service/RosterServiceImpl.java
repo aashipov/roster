@@ -31,7 +31,7 @@ public class RosterServiceImpl<E extends Employee, S extends Salary> implements 
     @Override
     public E save(E employee) {
         employeeRepository.save(employee);
-        return this.findByUuid(employee.getUuid());
+        return this.findById(employee.getId());
     }
 
     @Override
@@ -40,7 +40,7 @@ public class RosterServiceImpl<E extends Employee, S extends Salary> implements 
     }
 
     @Override
-    public E findByUuid(UUID uuid) {
+    public E findById(UUID uuid) {
         return  (E) employeeRepository.findById(uuid).get();
     }
 }

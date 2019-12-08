@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
  * Сотрудник.
  */
 @Entity
-public class Employee extends EntityWithUuid {
+public class Employee extends EntityWithId {
 
     private static final long serialVersionUID = 1L;
 

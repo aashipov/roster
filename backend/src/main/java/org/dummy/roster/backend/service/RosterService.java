@@ -30,5 +30,5 @@ public interface RosterService<E extends Employee, S extends Salary> {
      * @param uuid {@link UUID}
      * @return {@link Employee}
      */
-    E findByUuid(UUID uuid);
+    E findById(UUID uuid);
 }

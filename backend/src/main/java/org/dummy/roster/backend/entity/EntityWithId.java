@@ -9,7 +9,7 @@ import java.util.UUID;
  * Сущность с ID;
  */
 @MappedSuperclass
-public class EntityWithUuid implements Serializable, Comparable {
+public class EntityWithId implements Serializable, Comparable {
 
     private static final long serialVersionUID = 1L;
 
@@ -18,23 +18,23 @@ public class EntityWithUuid implements Serializable, Comparable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected UUID uuid;
+    protected UUID id;
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getId() {
+        return id;
     }
 
-    public EntityWithUuid setUuid(UUID u) {
-        this.uuid = u;
+    public EntityWithId setId(UUID u) {
+        this.id = u;
         return this;
     }
 
     @Override
     public int compareTo(Object o) {
-        if (!(o instanceof EntityWithUuid)) {
+        if (!(o instanceof EntityWithId)) {
             return 1;
         }
-        return this.uuid.compareTo(((EntityWithUuid) o).getUuid());
+        return this.id.compareTo(((EntityWithId) o).getId());
     }
 
     @Override
@@ -45,12 +45,12 @@ public class EntityWithUuid implements Serializable, Comparable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        EntityWithUuid that = (EntityWithUuid) o;
-        return Objects.equals(uuid, that.uuid);
+        EntityWithId that = (EntityWithId) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid);
+        return Objects.hash(id);
     }
 }

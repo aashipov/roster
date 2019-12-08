@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
  * Оклад {@link Employee}.
  */
 @Entity
-public class Salary extends EntityWithUuid {
+public class Salary extends EntityWithId {
 
     private static final long serialVersionUID = 1L;
 

@@ -22,10 +22,6 @@ import static org.junit.Assert.*;
 @DataJpaTest
 public class EmployeeRepositoryTest {
 
-    private static final String DUMMY_NAME = "John Doe";
-    private static final String CURRENCY = "RUR";
-    private static final Double AMOUNT = Double.valueOf(1.23);
-
     /**
      * {@link TestEntityManager}.
      */
@@ -46,11 +42,11 @@ public class EmployeeRepositoryTest {
      */
     @Test
     public void findByIdTest() {
-        Employee employee = new Employee().setName(DUMMY_NAME);
+        Employee employee = new Employee().setName(TestConstants.DUMMY_NAME);
         entityManager.persist(employee);
         entityManager.flush();
 
-        Salary salary = new Salary().setEmployee(employee).setCurrency(Currency.getInstance(CURRENCY)).setAmount(BigDecimal.valueOf(AMOUNT));
+        Salary salary = new Salary().setEmployee(employee).setCurrency(Currency.getInstance(TestConstants.CURRENCY)).setAmount(BigDecimal.valueOf(TestConstants.AMOUNT));
         entityManager.persist(salary);
         entityManager.flush();
 
@@ -58,14 +54,14 @@ public class EmployeeRepositoryTest {
         entityManager.merge(employee);
         entityManager.flush();
 
-        Employee found = employeeRepository.findById(employee.getUuid()).get();
+        Employee found = employeeRepository.findById(employee.getId()).get();
         assertNotNull("employee", found);
-        assertEquals("same name", DUMMY_NAME, employee.getName());
+        assertEquals("same name", TestConstants.DUMMY_NAME, employee.getName());
         assertNotNull("salary", employee.getSalary());
-        assertEquals("currency", Currency.getInstance(CURRENCY), employee.getSalary().getCurrency());
+        assertEquals("currency", Currency.getInstance(TestConstants.CURRENCY), employee.getSalary().getCurrency());
 
         employeeRepository.delete(employee);
-        assertFalse("employee deleted", employeeRepository.findById(employee.getUuid()).isPresent());
-        assertFalse("salary removed as well", salaryRepository.findById(salary.getUuid()).isPresent());
+        assertFalse("employee deleted", employeeRepository.findById(employee.getId()).isPresent());
+        assertFalse("salary removed as well", salaryRepository.findById(salary.getId()).isPresent());
     }
 }
