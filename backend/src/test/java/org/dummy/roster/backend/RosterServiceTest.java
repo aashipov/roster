@@ -64,17 +64,24 @@ public class RosterServiceTest {
     @Before
     public void setUp() {
         Employee dummyWithIds = makeADummyWithIds();
+
         List<Employee> allEmployees = Stream.of(dummyWithIds).collect(toList());
+
+        Mockito.when(employeeRepository.save(dummyWithIds)).thenReturn(dummyWithIds);
+        Mockito.when(salaryRepository.save(dummyWithIds.getSalary())).thenReturn(dummyWithIds.getSalary());
         Mockito.when(employeeRepository.findById(dummyWithIds.getId())).thenReturn(Optional.of(dummyWithIds));
         Mockito.when(employeeRepository.findAll()).thenReturn(allEmployees);
     }
 
     @Test
     public void saveTest() {
-        Employee employee = rosterService.findById(DUMMY_ID);
+        Employee employee = rosterService.save(makeADummyWithIds());
         assertNotNull("dummy found", employee);
         assertEquals("dummy name", DUMMY_NAME, employee.getName());
         assertEquals("dummy uuid", DUMMY_ID, employee.getId());
+        assertNotNull("salary", employee.getSalary());
+        assertEquals("currency", CURRENCY, employee.getSalary().getCurrency());
+        assertEquals("amount", AMOUNT, employee.getSalary().getAmount());
     }
 
     @Ignore

@@ -40,7 +40,7 @@ public class EmployeeRepositoryTest {
         assertNotNull("employee", found);
         assertEquals("same name", TestConstants.DUMMY_NAME, dummy.getName());
         assertNotNull("salary", dummy.getSalary());
-        assertEquals("currency", Currency.getInstance(TestConstants.CURRENCY), dummy.getSalary().getCurrency());
+        assertEquals("currency", TestConstants.CURRENCY, dummy.getSalary().getCurrency());
 
         employeeRepository.delete(dummy);
         assertFalse("employee deleted", employeeRepository.findById(dummy.getId()).isPresent());
