@@ -15,8 +15,10 @@ import org.dummy.roster.backend.service.RosterService;
  * Контроллер.
  */
 @RestController
-@RequestMapping("/employees")
+@RequestMapping(RosterRestController.ROSTER_PATH)
 public class RosterRestController {
+
+    public static final String ROSTER_PATH = "/employees";
 
     @Autowired
     RosterService rosterService;

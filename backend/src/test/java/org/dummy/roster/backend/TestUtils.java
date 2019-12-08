@@ -2,15 +2,18 @@ package org.dummy.roster.backend;
 
 import org.dummy.roster.backend.entity.Employee;
 import org.dummy.roster.backend.entity.Salary;
+import org.springframework.http.HttpMethod;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.util.Currency;
 import java.util.UUID;
 
 /**
- * Константы тестов.
+ * Вспомогательные функции тестов.
  */
-public final class TestConstants {
+public final class TestUtils {
 
     public static final String DUMMY_NAME = "John Doe";
     public static final UUID DUMMY_ID = UUID.fromString("1dfa8c95-a7c2-4139-88d0-a0bee00ac191");
@@ -21,7 +24,7 @@ public final class TestConstants {
     /**
      * Конструктор.
      */
-    private TestConstants() {
+    private TestUtils() {
         //
     }
 

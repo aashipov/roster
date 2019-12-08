@@ -20,7 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 import static java.util.stream.Collectors.toList;
-import static org.dummy.roster.backend.TestConstants.*;
+import static org.dummy.roster.backend.TestUtils.*;
 import static org.junit.Assert.*;
 
 /**
@@ -35,7 +35,7 @@ public class RosterServiceTest {
     @TestConfiguration
     static class RosterServiceTestContextConfiguration {
         @Bean
-        public RosterService employeeService() {
+        public RosterService rosterService() {
             return new RosterServiceImpl();
         }
     }

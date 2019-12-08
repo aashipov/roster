@@ -1,6 +1,5 @@
 package org.dummy.roster.backend;
 
-import java.util.Currency;
 import org.dummy.roster.backend.repository.SalaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -10,7 +9,7 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 import org.dummy.roster.backend.entity.Employee;
 import org.dummy.roster.backend.repository.EmployeeRepository;
-import static org.dummy.roster.backend.TestConstants.makeADummy;
+import static org.dummy.roster.backend.TestUtils.makeADummy;
 
 /**
  * {@link Test} {@link EmployeeRepository}.
@@ -38,9 +37,9 @@ public class EmployeeRepositoryTest {
 
         Employee found = employeeRepository.findById(dummy.getId()).get();
         assertNotNull("employee", found);
-        assertEquals("same name", TestConstants.DUMMY_NAME, dummy.getName());
+        assertEquals("same name", TestUtils.DUMMY_NAME, dummy.getName());
         assertNotNull("salary", dummy.getSalary());
-        assertEquals("currency", TestConstants.CURRENCY, dummy.getSalary().getCurrency());
+        assertEquals("currency", TestUtils.CURRENCY, dummy.getSalary().getCurrency());
 
         employeeRepository.delete(dummy);
         assertFalse("employee deleted", employeeRepository.findById(dummy.getId()).isPresent());
