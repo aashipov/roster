@@ -1,7 +1,6 @@
 package org.dummy.roster.backend.entity;
 
 import javax.persistence.*;
-import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
@@ -17,9 +16,9 @@ public class Employee extends EntityWithUuid {
      */
     private String name;
 
-    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private Set<Salary> salary;
+    private Salary salary;
 
     /**
      * Конструктор.
@@ -37,11 +36,11 @@ public class Employee extends EntityWithUuid {
         return this;
     }
 
-    public Set<Salary> getSalary() {
+    public Salary getSalary() {
         return salary;
     }
 
-    public Employee setSalary(Set<Salary> salary) {
+    public Employee setSalary(Salary salary) {
         this.salary = salary;
         return this;
     }

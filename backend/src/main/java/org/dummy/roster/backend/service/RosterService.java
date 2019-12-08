@@ -1,6 +1,7 @@
 package org.dummy.roster.backend.service;
 
 import java.util.List;
+import java.util.UUID;
 import org.dummy.roster.backend.entity.Employee;
 import org.dummy.roster.backend.entity.Salary;
 
@@ -16,11 +17,18 @@ public interface RosterService<E extends Employee, S extends Salary> {
      * @param employee {@link Employee}
      * @return {@link Employee}
      */
-    E saveKludge(E employee);
+    E save(E employee);
 
     /**
      * Прочитать всех {@link Employee}.
      * @return {@link List} {@link Employee}
      */
     List<E> findAll();
+
+    /**
+     * Найти {@link Employee} по {@link UUID}.
+     * @param uuid {@link UUID}
+     * @return {@link Employee}
+     */
+    E findByUuid(UUID uuid);
 }

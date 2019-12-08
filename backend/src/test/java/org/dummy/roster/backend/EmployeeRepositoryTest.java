@@ -1,25 +1,29 @@
 package org.dummy.roster.backend;
 
+import java.math.BigDecimal;
+import java.util.Currency;
+import org.dummy.roster.backend.entity.Salary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.dummy.roster.backend.entity.Employee;
-import org.dummy.roster.backend.repository.EmployeeRepository;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import org.dummy.roster.backend.entity.Employee;
+import org.dummy.roster.backend.repository.EmployeeRepository;
 
 /**
  * {@link Test} {@link EmployeeRepository}.
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class EmployeeRepositoryIT {
+public class EmployeeRepositoryTest {
 
     private static final String DUMMY_NAME = "John Doe";
+    private static final String CURRENCY = "RUR";
+    private static final Double AMOUNT = Double.valueOf(1.23);
 
     /**
      * {@link TestEntityManager}.
@@ -42,8 +46,18 @@ public class EmployeeRepositoryIT {
         entityManager.persist(employee);
         entityManager.flush();
 
+        Salary salary = new Salary().setEmployee(employee).setCurrency(Currency.getInstance(CURRENCY)).setAmount(BigDecimal.valueOf(AMOUNT));
+        entityManager.persist(salary);
+        entityManager.flush();
+
+        employee.setSalary(salary);
+        entityManager.merge(employee);
+        entityManager.flush();
+
         Employee found = employeeRepository.findById(employee.getUuid()).get();
-        assertNotNull("not null", found);
+        assertNotNull("employee", found);
         assertEquals("same name", DUMMY_NAME, employee.getName());
+        assertNotNull("salary", employee.getSalary());
+        assertEquals("currency", Currency.getInstance(CURRENCY), employee.getSalary().getCurrency());
     }
 }
