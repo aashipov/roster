@@ -31,4 +31,9 @@ public interface RosterService<E extends Employee, S extends Salary> {
      * @return {@link Employee}
      */
     E findById(UUID uuid);
+
+    /**
+     * Удалить всех {@link Employee}.
+     */
+    void deleteAll();
 }

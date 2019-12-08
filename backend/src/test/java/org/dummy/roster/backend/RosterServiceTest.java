@@ -2,7 +2,6 @@ package org.dummy.roster.backend;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Stream;
 import org.dummy.roster.backend.entity.Employee;
 import org.dummy.roster.backend.repository.EmployeeRepository;
@@ -10,7 +9,6 @@ import org.dummy.roster.backend.repository.SalaryRepository;
 import org.dummy.roster.backend.service.RosterService;
 import org.dummy.roster.backend.service.RosterServiceImpl;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -82,11 +80,5 @@ public class RosterServiceTest {
         assertNotNull("salary", employee.getSalary());
         assertEquals("currency", CURRENCY, employee.getSalary().getCurrency());
         assertEquals("amount", AMOUNT, employee.getSalary().getAmount());
-    }
-
-    @Ignore
-    @Test
-    public void printUuidToStdout() {
-        System.out.println(UUID.randomUUID());
     }
 }

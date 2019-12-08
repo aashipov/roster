@@ -43,4 +43,9 @@ public class RosterServiceImpl<E extends Employee, S extends Salary> implements 
     public E findById(UUID uuid) {
         return  (E) employeeRepository.findById(uuid).get();
     }
+
+    @Override
+    public void deleteAll() {
+        employeeRepository.deleteAll();
+    }
 }
