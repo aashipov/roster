@@ -1,19 +1,16 @@
 package org.dummy.roster.backend;
 
-import java.math.BigDecimal;
 import java.util.Currency;
-import org.dummy.roster.backend.entity.Salary;
 import org.dummy.roster.backend.repository.SalaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.junit.Assert.*;
 import org.dummy.roster.backend.entity.Employee;
 import org.dummy.roster.backend.repository.EmployeeRepository;
-
-import static org.junit.Assert.*;
+import static org.dummy.roster.backend.TestConstants.makeADummy;
 
 /**
  * {@link Test} {@link EmployeeRepository}.
@@ -21,12 +18,6 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class EmployeeRepositoryTest {
-
-    /**
-     * {@link TestEntityManager}.
-     */
-    @Autowired
-    private TestEntityManager entityManager;
 
     /**
      * {@link EmployeeRepository}.
@@ -41,27 +32,18 @@ public class EmployeeRepositoryTest {
      * {@link Test} {@link EmployeeRepository#findById(Object)}.
      */
     @Test
-    public void findByIdTest() {
-        Employee employee = new Employee().setName(TestConstants.DUMMY_NAME);
-        entityManager.persist(employee);
-        entityManager.flush();
+    public void saveTest() {
+        Employee dummy = makeADummy();
+        employeeRepository.save(dummy);
 
-        Salary salary = new Salary().setEmployee(employee).setCurrency(Currency.getInstance(TestConstants.CURRENCY)).setAmount(BigDecimal.valueOf(TestConstants.AMOUNT));
-        entityManager.persist(salary);
-        entityManager.flush();
-
-        employee.setSalary(salary);
-        entityManager.merge(employee);
-        entityManager.flush();
-
-        Employee found = employeeRepository.findById(employee.getId()).get();
+        Employee found = employeeRepository.findById(dummy.getId()).get();
         assertNotNull("employee", found);
-        assertEquals("same name", TestConstants.DUMMY_NAME, employee.getName());
-        assertNotNull("salary", employee.getSalary());
-        assertEquals("currency", Currency.getInstance(TestConstants.CURRENCY), employee.getSalary().getCurrency());
+        assertEquals("same name", TestConstants.DUMMY_NAME, dummy.getName());
+        assertNotNull("salary", dummy.getSalary());
+        assertEquals("currency", Currency.getInstance(TestConstants.CURRENCY), dummy.getSalary().getCurrency());
 
-        employeeRepository.delete(employee);
-        assertFalse("employee deleted", employeeRepository.findById(employee.getId()).isPresent());
-        assertFalse("salary removed as well", salaryRepository.findById(salary.getId()).isPresent());
+        employeeRepository.delete(dummy);
+        assertFalse("employee deleted", employeeRepository.findById(dummy.getId()).isPresent());
+        assertFalse("salary removed as well", salaryRepository.findById(dummy.getSalary().getId()).isPresent());
     }
 }

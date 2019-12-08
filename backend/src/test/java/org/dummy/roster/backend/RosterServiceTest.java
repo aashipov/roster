@@ -20,8 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 import static java.util.stream.Collectors.toList;
-import static org.dummy.roster.backend.TestConstants.DUMMY_NAME;
-import static org.dummy.roster.backend.TestConstants.DUMMY_ID;
+import static org.dummy.roster.backend.TestConstants.*;
 import static org.junit.Assert.*;
 
 /**
@@ -64,15 +63,14 @@ public class RosterServiceTest {
      */
     @Before
     public void setUp() {
-        Employee dummy = new Employee().setName(DUMMY_NAME);
-        dummy.setId(DUMMY_ID);
-        List<Employee> allEmployees = Stream.of(dummy).collect(toList());
-        Mockito.when(employeeRepository.findById(dummy.getId())).thenReturn(Optional.of(dummy));
+        Employee dummyWithIds = makeADummyWithIds();
+        List<Employee> allEmployees = Stream.of(dummyWithIds).collect(toList());
+        Mockito.when(employeeRepository.findById(dummyWithIds.getId())).thenReturn(Optional.of(dummyWithIds));
         Mockito.when(employeeRepository.findAll()).thenReturn(allEmployees);
     }
 
     @Test
-    public void findByIdTest() {
+    public void saveTest() {
         Employee employee = rosterService.findById(DUMMY_ID);
         assertNotNull("dummy found", employee);
         assertEquals("dummy name", DUMMY_NAME, employee.getName());
