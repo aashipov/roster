@@ -26,7 +26,7 @@ public class Salary extends EntityWithUuid {
     /**
      * {@link Employee}.
      */
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_uuid")
     @JsonBackReference
     private Employee employee;

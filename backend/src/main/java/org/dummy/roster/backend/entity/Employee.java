@@ -16,7 +16,7 @@ public class Employee extends EntityWithUuid {
      */
     private String name;
 
-    @OneToOne(mappedBy = "employee", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Salary salary;
 
