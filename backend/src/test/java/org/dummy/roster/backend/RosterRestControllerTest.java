@@ -37,8 +37,7 @@ public class RosterRestControllerTest {
     @Test
     public void saveTest() {
         try {
-            mvc.perform(buildPost(ROSTER_PATH, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, makeADummy()))
-                    .andExpect(status().isCreated());
+            mvc.perform(buildPost(ROSTER_PATH, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, makeADummy())).andExpect(status().isCreated());
         } catch (Exception e) {
 
         }

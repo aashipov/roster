@@ -2,15 +2,12 @@ package org.dummy.roster.backend.rest;
 
 import java.util.List;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.dummy.roster.backend.entity.Employee;
 import org.dummy.roster.backend.service.RosterService;
-
-import javax.websocket.server.PathParam;
 
 /**
  * Контроллер.
@@ -63,7 +60,7 @@ public class RosterRestController {
      * Удалить всех {@link Employee}.
      * @return {@link ResponseEntity}
      */
-    @RequestMapping(method = RequestMethod.DELETE)
+    @RequestMapping(method = RequestMethod.DELETE, value = "/delete_all")
     public ResponseEntity deleteAll() {
         rosterService.deleteAll();
         return new ResponseEntity(HttpStatus.OK);
