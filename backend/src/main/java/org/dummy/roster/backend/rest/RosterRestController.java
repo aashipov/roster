@@ -1,12 +1,12 @@
 package org.dummy.roster.backend.rest;
 
 import java.util.List;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.dummy.roster.backend.entity.Employee;
+import org.dummy.roster.backend.entity.Salary;
 import org.dummy.roster.backend.service.RosterService;
 
 /**
@@ -41,19 +41,13 @@ public class RosterRestController {
     }
 
     /**
-     * Обновить {@link Employee}.
-     * @param id ID
-     * @param employee  {@link Employee}
-     * @return обновлённый {@link Employee}
+     * Изменить {@link Salary}.
+     * @param salary {@link Salary}
+     * @return {@link Salary}
      */
-    @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
-    public ResponseEntity<Employee> update(@PathVariable String id, @RequestBody Employee employee) {
-        if (null != id) {
-            employee.setId(UUID.fromString(id));
-        } else {
-            throw new IllegalArgumentException("id is null");
-        }
-        return new ResponseEntity<>(rosterService.save(employee), HttpStatus.OK);
+    @RequestMapping(method = RequestMethod.PUT, value = "/change_salary")
+    public ResponseEntity<Salary> changeSalary(@RequestBody Salary salary) {
+        return new ResponseEntity<>(rosterService.changeSalary(salary), HttpStatus.OK);
     }
 
     /**
