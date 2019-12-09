@@ -1,6 +1,5 @@
 package org.dummy.roster.backend.security;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +7,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 
 @Configuration
 @EnableWebSecurity
@@ -18,6 +19,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+
+    public SecurityConfig() {
+        super();
+        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+    }
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
@@ -36,8 +42,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/*").permitAll()
                 .antMatchers("/employees/delete_all").hasRole(USER)
-                .and()
-                .formLogin()
                 .and()
                 .httpBasic()
                 .and()

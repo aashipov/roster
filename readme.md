@@ -8,4 +8,4 @@
 
 ```curl -i --header "Accept:application/json" -X GET http://localhost:8080/employees```
 
-```curl -i -X DELETE -d username=USER -d password=USER http://localhost:8080/employees/delete_all```
+```curl -i --header "Authorization:Basic VVNFUjpVU0VS" -X DELETE http://localhost:8080/employees/delete_all```
