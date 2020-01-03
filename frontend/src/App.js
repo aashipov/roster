@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import EmployeeList from "./components/EmployeeTable";
 import Employee from "./components/AddEmployee";
 
