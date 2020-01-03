@@ -1,0 +1,3 @@
+export const ADD_EMPLOYEE = 'ADD_EMPLOYEE';
+export const UDATE_EMPLOYEE = 'UPDATE_EMPLOYEE';
+export const GET_ALL_EMPLOYEES = 'GET_ALL_EMPLOYEES';

@@ -5,6 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>roster</artifactId>
         <groupId>org.dummy</groupId>
@@ -14,5 +15,8 @@
     <artifactId>frontend</artifactId>
     <packaging>jar</packaging>
 
+
+</project>
+    <packaging>pom</packaging>
 
 </project>

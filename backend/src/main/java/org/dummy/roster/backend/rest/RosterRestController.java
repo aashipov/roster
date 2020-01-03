@@ -12,6 +12,7 @@ import org.dummy.roster.backend.service.RosterService;
 /**
  * Контроллер.
  */
+@CrossOrigin
 @RestController
 @RequestMapping(RosterRestController.ROSTER_PATH)
 public class RosterRestController {

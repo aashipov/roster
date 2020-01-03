@@ -16,3 +16,5 @@ Thumbs.db
 /roster.lock.db
 /roster.mv.db
 /roster.trace.db
+/frontend/package-lock.json
+/frontend/node_modules/
