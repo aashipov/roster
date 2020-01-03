@@ -36,11 +36,4 @@ public interface RosterService<E extends Employee, S extends Salary> {
      * Удалить всех {@link Employee}.
      */
     void deleteAll();
-
-    /**
-     * Изменить {@link Salary} {@link Employee}.
-     * @param salary {@link Salary}
-     * @return {@link Employee}
-     */
-    S changeSalary(Salary salary);
 }

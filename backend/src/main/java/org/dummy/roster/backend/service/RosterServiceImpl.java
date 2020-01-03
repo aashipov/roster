@@ -48,11 +48,4 @@ public class RosterServiceImpl<E extends Employee, S extends Salary> implements 
     public void deleteAll() {
         employeeRepository.deleteAll();
     }
-
-    @Override
-    public S changeSalary(Salary salary) {
-        S persisted = (S) salaryRepository.findById(salary.getId()).get();
-        persisted.setCurrency(salary.getCurrency()).setAmount(salary.getAmount());
-        return salaryRepository.save(persisted);
-    }
 }
