@@ -9,11 +9,7 @@ const employees = (state = [], action) => {
         case ADD_EMPLOYEE :
             return [
                 ...state,
-                {
-                    id: action.id,
-                    name: action.name,
-                    salary: action.salary,
-                }
+                action.employee
             ];
         default:
             return state;

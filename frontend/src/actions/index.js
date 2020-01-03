@@ -1,8 +1,5 @@
-import {readAllEmployees} from "../api";
+import {createEmployee, readAllEmployees} from "../api";
 import {ADD_EMPLOYEE, GET_ALL_EMPLOYEES, UDATE_EMPLOYEE} from '../constants';
-
-let nextEmployeeId = 1;
-let nextSalaryId = 1;
 
 export function fetchAllEmployees() {
     return function (dispatch) {
@@ -10,16 +7,20 @@ export function fetchAllEmployees() {
     }
 }
 
-export const addEmployee = (name, amount) => ({
-    type: ADD_EMPLOYEE,
-    id: ++nextEmployeeId,
-    name: name,
-    salary: {
-        id: ++nextSalaryId,
-        currency: 'RUR',
-        amount: amount
+export function addEmployee(name, amount) {
+    return function (dispatch) {
+        createEmployee({
+            name: name,
+            salary: {
+                currency: 'RUR',
+                amount: amount
+            }
+        }).then(r => dispatch({
+            type: ADD_EMPLOYEE,
+            employee: r
+        }))
     }
-});
+}
 
 export const updateEmployee = employee => ({
     type: UDATE_EMPLOYEE,
