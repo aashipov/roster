@@ -53,8 +53,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.dummy.roster</groupId>
+            <artifactId>frontend</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+        </dependency>
     </dependencies>
-
 
     <build>
         <finalName>roster</finalName>
@@ -69,13 +74,13 @@
                 <executions>
                     <execution>
                         <id>copy-ui</id>
-                        <phase>clean</phase>
+                        <phase>process-resources</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
                         <configuration>
                             <target>
-                                <copy todir="${basedir}/src/main/resources/static">
+                                <copy todir="${project.build.directory}/classes/static">
                                     <fileset dir="${project.basedir}/../frontend/public/" />
                                 </copy>
                             </target>
