@@ -2,6 +2,9 @@ import React from "react";
 import {removeAll} from "../actions";
 import {connect} from "react-redux";
 
+/**
+ * Удалить все.
+ */
 const DeleteAll = ({dispatch}) => {
     return (
         <div>
