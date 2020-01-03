@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Employee from "./EmployeeRow";
-import {getAll} from "../api";
-import {loadAllEmployees} from "../actions";
+import {fetchAllEmployees} from "../actions";
 
 /**
  * Таблица Сотркдники.
@@ -25,14 +24,8 @@ class EmployeeTable extends Component {
         super(props);
     }
 
-    refreshList() {
-        getAll().then(e => {
-            this.props.loadAllEmployees(e)
-        });
-    }
-
     componentDidMount() {
-        this.refreshList();
+        this.props.fetchAllEmployees();
     }
 
     render() {
@@ -58,7 +51,7 @@ const mapStateToProps = function (state) {
 
 const mapDispatchToProps = function (dispatch) {
     return {
-        loadAllEmployees: employees => dispatch(loadAllEmployees(employees))
+        fetchAllEmployees: () => dispatch(fetchAllEmployees())
     }
 };
 
