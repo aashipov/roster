@@ -24,8 +24,6 @@ export function updateEmployee(employee) {
 
 //Fails in node.js
 export function deleteAll(user, password) {
-    let auth = "Basic " + btoa(user + ":" + password);
-    console.log(auth);
     return axios
         .delete(BASE_URL + EMPLOYEES_PATH + `/delete_all`, {headers: {Authorization: "Basic " + btoa(user + ":" + password)}})
         .then(resp => {
