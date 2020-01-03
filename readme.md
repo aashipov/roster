@@ -1,8 +1,8 @@
 ### Roster service ###
 
-Build frontend ```cd frontend && npm run prod && cd ..```
-
 Build app ```mvn clean package```
+
+Run ```java -jar backend/target/roster.jar```
 
 ```docker build . -t org.dummy/roster```
 
