@@ -18,6 +18,7 @@ const AddEmployee = ({dispatch}) => {
                 nameInput.value = '';
                 amountInput.value = '';
             }}>
+                <h3>Ввод сотрудника</h3>
                 <label>Имя:</label>
                 <input id={'add-employee-name'} ref={node => {
                     nameInput = node;

@@ -9,6 +9,7 @@ import {fetchAllEmployees} from "../actions";
 const TableHeader = () => {
     return (
         <thead>
+        <h3>Оклады сотрудников</h3>
         <tr>
             <th>Сотрудник</th>
             <th>Оклад</th>

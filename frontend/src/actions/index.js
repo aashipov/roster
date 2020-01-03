@@ -31,8 +31,8 @@ export function saveEmployee(employee) {
     }
 }
 
-export function removeAll() {
+export function removeAll(user, password) {
     return function (dispatch) {
-        deleteAll().then(r => dispatch({type : DELETE_ALL, employees: r}))
+        deleteAll(user, password).then(r => dispatch({type : DELETE_ALL, employees: r}))
     }
 }

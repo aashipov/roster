@@ -23,10 +23,11 @@ export function updateEmployee(employee) {
 }
 
 //Fails in node.js
-export function deleteAll() {
-    //return fetch(BASE_URL + EMPLOYEES_PATH + `/delete_all`, {method: 'DELETE', headers: {Authorization: "Basic VVNFUjpVU0VS"}}).then(resp => {return resp});
+export function deleteAll(user, password) {
+    let auth = "Basic " + btoa(user + ":" + password);
+    console.log(auth);
     return axios
-        .delete(BASE_URL + EMPLOYEES_PATH + `/delete_all`, {headers: {Authorization: "Basic VVNFUjpVU0VS"}})
+        .delete(BASE_URL + EMPLOYEES_PATH + `/delete_all`, {headers: {Authorization: "Basic " + btoa(user + ":" + password)}})
         .then(resp => {
             return resp
         });
