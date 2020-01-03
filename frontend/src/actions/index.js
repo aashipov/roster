@@ -1,5 +1,5 @@
-import {createEmployee, readAllEmployees, updateEmployee} from "../api";
-import {ADD_EMPLOYEE, GET_ALL_EMPLOYEES, UDATE_EMPLOYEE} from '../constants';
+import {createEmployee, deleteAll, readAllEmployees, updateEmployee} from "../api";
+import {ADD_EMPLOYEE, DELETE_ALL, GET_ALL_EMPLOYEES, UDATE_EMPLOYEE} from '../constants';
 
 export function fetchAllEmployees() {
     return function (dispatch) {
@@ -28,5 +28,11 @@ export function saveEmployee(employee) {
             type: UDATE_EMPLOYEE,
             employee: r
         }))
+    }
+}
+
+export function removeAll() {
+    return function (dispatch) {
+        deleteAll().then(r => dispatch({type : DELETE_ALL, employees: r}))
     }
 }

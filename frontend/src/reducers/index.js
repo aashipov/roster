@@ -1,4 +1,4 @@
-import {ADD_EMPLOYEE, GET_ALL_EMPLOYEES, UDATE_EMPLOYEE} from '../constants';
+import {ADD_EMPLOYEE, DELETE_ALL, GET_ALL_EMPLOYEES, UDATE_EMPLOYEE} from '../constants';
 import {combineReducers} from "redux";
 
 const employees = (state = [], action) => {
@@ -16,9 +16,12 @@ const employees = (state = [], action) => {
                 if (emp.id === action.employee.id) {
                     Object.assign({}, emp, action.employee)
                 }
-            })
+            });
             return state;
-        }
+        };
+        case DELETE_ALL : {
+            return [];
+        };
         default:
             return state;
     }
