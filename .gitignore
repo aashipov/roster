@@ -18,3 +18,8 @@ Thumbs.db
 /roster.trace.db
 /frontend/package-lock.json
 /frontend/node_modules/
+/backend/src/main/resources/static/index.html
+/backend/src/main/resources/static/main.js
+/backend/src/main/resources/static/vendor.js
+/frontend/public/main.js
+/frontend/public/vendor.js
