@@ -1,4 +1,4 @@
-import {createEmployee, readAllEmployees} from "../api";
+import {createEmployee, readAllEmployees, updateEmployee} from "../api";
 import {ADD_EMPLOYEE, GET_ALL_EMPLOYEES, UDATE_EMPLOYEE} from '../constants';
 
 export function fetchAllEmployees() {
@@ -22,7 +22,11 @@ export function addEmployee(name, amount) {
     }
 }
 
-export const updateEmployee = employee => ({
-    type: UDATE_EMPLOYEE,
-    employee
-});
+export function saveEmployee(employee) {
+    return function (dispatch) {
+        updateEmployee(employee).then(r => dispatch({
+            type: UDATE_EMPLOYEE,
+            employee: r
+        }))
+    }
+}

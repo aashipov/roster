@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.dummy.roster.backend.entity.Employee;
-import org.dummy.roster.backend.entity.Salary;
 import org.dummy.roster.backend.service.RosterService;
 
 /**
@@ -42,13 +41,13 @@ public class RosterRestController {
     }
 
     /**
-     * Изменить {@link Salary}.
-     * @param salary {@link Salary}
-     * @return {@link Salary}
+     * Изменить {@link Employee}.
+     * @param employee {@link Employee}
+     * @return {@link Employee}
      */
-    @RequestMapping(method = RequestMethod.PUT, value = "/change_salary")
-    public ResponseEntity<Salary> changeSalary(@RequestBody Salary salary) {
-        return new ResponseEntity<>(rosterService.changeSalary(salary), HttpStatus.OK);
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseEntity<Employee> update(@RequestBody Employee employee) {
+        return new ResponseEntity<>(rosterService.save(employee), HttpStatus.OK);
     }
 
     /**

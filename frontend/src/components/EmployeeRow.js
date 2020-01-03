@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {updateEmployee} from "../actions";
+import {saveEmployee} from "../actions";
 
 /**
  * Строка таблицы Сотрудники.
@@ -27,7 +27,7 @@ class EmployeeRow extends Component {
     onSubmit(evt) {
         evt.preventDefault();
         const {employee} = this.state;
-        this.props.updateEmployee(employee);
+        this.props.saveEmployee(employee);
     }
 
     render() {
@@ -46,7 +46,7 @@ class EmployeeRow extends Component {
 
 const mapDispatchToProps = function (dispatch) {
     return {
-        updateEmployee: employee => dispatch(updateEmployee(employee))
+        saveEmployee: employee => dispatch(saveEmployee(employee))
     }
 };
 

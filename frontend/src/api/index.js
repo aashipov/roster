@@ -12,3 +12,7 @@ export function createEmployee(employee) {
     return axios.post(BASE_URL + EMPLOYEES_PATH, employee).then(resp => {return resp.data});
 }
 
+export function updateEmployee(employee) {
+    return axios.put(BASE_URL + EMPLOYEES_PATH, employee).then(resp => {return resp.data});
+}
+
