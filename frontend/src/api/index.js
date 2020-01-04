@@ -1,23 +1,25 @@
 const axios = require('axios').default;
 
-const BACKEND_URL = `http://localhost:8080`;
-const EMPLOYEES_PATH = `/employees`;
-export const BASE_URL = `${process.env.NODE_ENV !== "production" ? BACKEND_URL : window.location.origin}`;
+const DEFAULT_LOCALHOST = `http://localhost:8080`;
+const API_V1 = `/api/v1`;
+const EMPLOYEES = `/employees`;
+const BACKEND = `${process.env.NODE_ENV !== "production" ? DEFAULT_LOCALHOST : window.location.origin}`;
+const API_V1_EMPLOYEES = BACKEND + API_V1 + EMPLOYEES;
 
 export function readAllEmployees() {
-    return axios.get(BASE_URL + EMPLOYEES_PATH).then(resp => {
+    return axios.get(API_V1_EMPLOYEES).then(resp => {
         return resp.data
     });
 }
 
 export function createEmployee(employee) {
-    return axios.post(BASE_URL + EMPLOYEES_PATH, employee).then(resp => {
+    return axios.post(API_V1_EMPLOYEES, employee).then(resp => {
         return resp.data
     });
 }
 
 export function updateEmployee(employee) {
-    return axios.put(BASE_URL + EMPLOYEES_PATH, employee).then(resp => {
+    return axios.put(API_V1_EMPLOYEES, employee).then(resp => {
         return resp.data
     });
 }
@@ -25,7 +27,7 @@ export function updateEmployee(employee) {
 //Fails in node.js
 export function deleteAll(user, password) {
     return axios
-        .delete(BASE_URL + EMPLOYEES_PATH + `/delete_all`, {headers: {Authorization: "Basic " + btoa(user + ":" + password)}})
+        .delete(API_V1_EMPLOYEES + `/delete_all`, {headers: {Authorization: "Basic " + btoa(user + ":" + password)}})
         .then(resp => {
             return resp
         });
