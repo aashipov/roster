@@ -1,6 +1,8 @@
 package org.dummy.roster.backend.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
@@ -14,6 +16,7 @@ public class Employee extends EntityWithId {
     /**
      * Имя.
      */
+    @NotNull
     private String name;
 
     @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

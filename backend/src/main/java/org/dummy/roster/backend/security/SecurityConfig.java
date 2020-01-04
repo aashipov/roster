@@ -3,19 +3,19 @@ package org.dummy.roster.backend.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.context.SecurityContextHolder;
+import static org.dummy.roster.backend.utils.Constants.USER;
 
 
 @Configuration
 @EnableWebSecurity
 @ComponentScan("org.dummy.roster.backend.security")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    private static final String USER = "USER";
 
     @Autowired
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/*").permitAll()
-                .antMatchers("/employees/delete_all").hasRole(USER)
+                .antMatchers(HttpMethod.DELETE,"/api/v1/employees").hasRole(USER)
                 .and()
                 .httpBasic()
                 .and()
