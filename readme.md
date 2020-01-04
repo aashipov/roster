@@ -8,6 +8,6 @@ Run ```java -jar backend/target/roster.jar```
 
 ```docker run --rm -p 8080:8080 -it org.dummy/roster /bin/bash```
 
-```curl -i --header "Accept:application/json" -X GET http://localhost:8080/employees```
+#### License ####
 
-```curl -i --header "Authorization:Basic VVNFUjpVU0VS" -X DELETE http://localhost:8080/employees/delete_all```
+Perl "Artistic License"
