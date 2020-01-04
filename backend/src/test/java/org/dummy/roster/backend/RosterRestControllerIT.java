@@ -1,7 +1,5 @@
 package org.dummy.roster.backend;
 
-import org.dummy.roster.backend.repository.EmployeeRepository;
-import org.dummy.roster.backend.repository.SalaryRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +9,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
+import org.dummy.roster.backend.repository.EmployeeRepository;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.dummy.roster.backend.RestUtils.buildPost;
 import static org.dummy.roster.backend.TestUtils.makeADummy;
-import static org.dummy.roster.backend.rest.RosterRestController.ROSTER_PATH;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.dummy.roster.backend.utils.Constants.API_V1_EMPLOYEES;
 
 /**
  * Integration test {@link org.dummy.roster.backend.rest.RosterRestController}.
@@ -38,16 +36,10 @@ public class RosterRestControllerIT {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    /**
-     * {@link SalaryRepository}.
-     */
-    @Autowired
-    private SalaryRepository salaryRepository;
-
     @Test
     public void saveTest() {
         try {
-            mvc.perform(buildPost(ROSTER_PATH, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, makeADummy()))
+            mvc.perform(buildPost(API_V1_EMPLOYEES, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, makeADummy()))
                     .andExpect(status().isCreated());
         } catch (Exception e) {
 

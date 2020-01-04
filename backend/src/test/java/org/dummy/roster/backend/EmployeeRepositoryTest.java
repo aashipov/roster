@@ -1,6 +1,5 @@
 package org.dummy.roster.backend;
 
-import org.dummy.roster.backend.repository.SalaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -24,9 +23,6 @@ public class EmployeeRepositoryTest {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    @Autowired
-    private SalaryRepository salaryRepository;
-
     /**
      * {@link Test} {@link EmployeeRepository#findById(Object)}.
      */
@@ -43,6 +39,5 @@ public class EmployeeRepositoryTest {
 
         employeeRepository.delete(dummy);
         assertFalse("employee deleted", employeeRepository.findById(dummy.getId()).isPresent());
-        assertFalse("salary removed as well", salaryRepository.findById(dummy.getSalary().getId()).isPresent());
     }
 }
