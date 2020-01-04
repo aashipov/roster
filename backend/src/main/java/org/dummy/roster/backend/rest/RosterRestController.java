@@ -25,7 +25,6 @@ public class RosterRestController {
 
     /**
      * Получить всех {@link Employee}.
-     *
      * @return {@link List} {@link Employee}
      */
     @RequestMapping(method = RequestMethod.GET)
@@ -35,7 +34,6 @@ public class RosterRestController {
 
     /**
      * Создать {@link Employee}.
-     *
      * @param employee создаваемый {@link Employee}
      * @return созданный {@link Employee}
      */
@@ -46,21 +44,19 @@ public class RosterRestController {
 
     /**
      * Изменить {@link Employee}.
-     *
      * @param employee {@link Employee}
      * @return {@link Employee}
      */
-    @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<Employee> update(@RequestBody Employee employee) {
+    @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
+    public ResponseEntity<Employee> update(@PathVariable String id, @RequestBody Employee employee) {
         return new ResponseEntity<>((Employee) employeeRepository.save(employee), HttpStatus.OK);
     }
 
     /**
      * Удалить всех {@link Employee}.
-     *
      * @return {@link ResponseEntity}
      */
-    @RequestMapping(method = RequestMethod.DELETE, value = "/delete_all")
+    @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity deleteAll() {
         employeeRepository.deleteAll();
         return new ResponseEntity(HttpStatus.OK);

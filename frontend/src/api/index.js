@@ -19,7 +19,7 @@ export function createEmployee(employee) {
 }
 
 export function updateEmployee(employee) {
-    return axios.put(API_V1_EMPLOYEES, employee).then(resp => {
+    return axios.put(API_V1_EMPLOYEES + `/` + employee.id, employee).then(resp => {
         return resp.data
     });
 }
@@ -27,7 +27,7 @@ export function updateEmployee(employee) {
 //Fails in node.js
 export function deleteAll(user, password) {
     return axios
-        .delete(API_V1_EMPLOYEES + `/delete_all`, {headers: {Authorization: "Basic " + btoa(user + ":" + password)}})
+        .delete(API_V1_EMPLOYEES, {headers: {Authorization: "Basic " + btoa(user + ":" + password)}})
         .then(resp => {
             return resp
         });
