@@ -1,8 +1,6 @@
 package org.dummy.roster.backend.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.util.Currency;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -18,13 +16,11 @@ public class Salary extends EntityWithId {
     /**
      * Валюта оклада.
      */
-    @NotNull
     private Currency currency;
 
     /**
      * Оклад {@link Employee}.
      */
-    @PositiveOrZero
     private BigDecimal amount;
 
     /**

@@ -1,12 +1,20 @@
-### Roster service ###
+### Dummy app - Roster service ###
 
-Build app ```mvn clean package```
+#### How to (build) and run ####
 
-Run ```java -jar backend/target/roster.jar```
+Port 8080
 
-```docker build . -t org.dummy/roster```
+##### Docker: on-premise #####
 
-```docker run --rm -p 8080:8080 -it org.dummy/roster /bin/bash```
+```bash build-and-run.bash```
+
+##### On-premise #####
+
+Requirements ```openjdk 11```, ```maven``` in ```PATH```
+
+```mvn clean install```
+
+```java -jar backend/target/roster.jar```
 
 #### License ####
 

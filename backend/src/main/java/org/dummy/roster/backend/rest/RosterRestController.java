@@ -1,7 +1,6 @@
 package org.dummy.roster.backend.rest;
 
 import java.util.List;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +39,7 @@ public class RosterRestController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    Employee create(@Valid @RequestBody Employee employee) {
+    Employee create(@RequestBody Employee employee) {
         return (Employee) employeeRepository.save(employee);
     }
 
@@ -50,7 +49,7 @@ public class RosterRestController {
      * @return {@link Employee}
      */
     @PutMapping("/{id}")
-    Employee update(@PathVariable String id, @Valid @RequestBody Employee employee) {
+    Employee update(@PathVariable String id, @RequestBody Employee employee) {
         return employeeRepository.save(employee);
     }
 
