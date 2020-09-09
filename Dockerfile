@@ -26,3 +26,4 @@ WORKDIR /dummy/
 EXPOSE 8080
 USER dummy
 CMD java -jar roster.jar
+HEALTHCHECK CMD curl -f http://localhost:8080/actuator/health || exit 1
