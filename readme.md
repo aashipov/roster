@@ -6,7 +6,7 @@ Port 8080
 
 ##### Docker: Docker Hub #####
 
-```docker run -d --rm --name=roster --hostname=roster -p 8080:8080 aashipov/roster```
+```docker pull aashipov/roster && docker run -d --rm --name=roster --hostname=roster -p 8080:8080 aashipov/roster```
 
 ##### Docker: on-premise #####
 
