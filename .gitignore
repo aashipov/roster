@@ -26,3 +26,4 @@ Thumbs.db
 /frontend/public/vendor.js
 backend/roster.mv.db
 backend/roster.trace.db
+/.vscode/
