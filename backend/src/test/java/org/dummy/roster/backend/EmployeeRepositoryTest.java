@@ -3,6 +3,8 @@ package org.dummy.roster.backend;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import org.dummy.roster.backend.dao.EmployeeDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,10 +12,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.junit.*;
 import org.junit.runner.RunWith;
-import org.dummy.roster.backend.rm.EmployeeRM;
 import org.dummy.roster.backend.entity.Employee;
 import org.dummy.roster.backend.repository.EmployeeRepository;
-import static org.dummy.roster.backend.rm.EmployeeRM.select;
 import static org.junit.Assert.*;
 import static org.dummy.roster.backend.TestUtils.makeADummy;
 
@@ -38,6 +38,12 @@ public class EmployeeRepositoryTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    private EmployeeDAO employeeDAO;
+
+    @PostConstruct
+    private void pc() {
+        this.employeeDAO = new EmployeeDAO(this.jdbcTemplate);
+    }
 
     @Before
     public void setUp() {
@@ -123,10 +129,9 @@ public class EmployeeRepositoryTest {
             }
             jpa[i] = System.nanoTime() - start;
         }
-        EmployeeRM erm = new EmployeeRM();
         for (int i = 0; i < SAMPLE_SIZE; i++) {
             start = System.nanoTime();
-            employeeList = (List<Employee>) makeCollection(jdbcTemplate.query(select(), erm));
+            employeeList = (List<Employee>) makeCollection(employeeDAO.readAll());
             for (Employee found : employeeList) {
                 reassure(found);
             }
