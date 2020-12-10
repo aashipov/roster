@@ -27,7 +27,7 @@ public class Salary extends EntityWithId {
      * {@link Employee}.
      */
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_uuid")
+    @JoinColumn(name = "employee_id")
     @JsonBackReference
     private Employee employee;
 
@@ -42,8 +42,8 @@ public class Salary extends EntityWithId {
         return currency;
     }
 
-    public Salary setCurrency(Currency salary) {
-        this.currency = salary;
+    public Salary setCurrency(Currency c) {
+        this.currency = c;
         return this;
     }
 
