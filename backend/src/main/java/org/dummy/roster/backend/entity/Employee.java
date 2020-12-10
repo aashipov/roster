@@ -1,5 +1,6 @@
 package org.dummy.roster.backend.entity;
 
+import java.io.Serializable;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -7,9 +8,16 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
  * Сотрудник.
  */
 @Entity
-public class Employee extends EntityWithId {
+public class Employee implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Первичный ключ.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected Long id;
 
     /**
      * Имя.
@@ -24,7 +32,16 @@ public class Employee extends EntityWithId {
      * Конструктор.
      */
     public Employee() {
-        super();
+        //
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Employee setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getName() {

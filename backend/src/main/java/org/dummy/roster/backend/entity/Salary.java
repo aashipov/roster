@@ -1,17 +1,25 @@
 package org.dummy.roster.backend.entity;
 
-import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Currency;
+import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * Оклад {@link Employee}.
  */
 @Entity
-public class Salary extends EntityWithId {
+public class Salary implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Первичный ключ.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected Long id;
 
     /**
      * Валюта оклада.
@@ -35,7 +43,16 @@ public class Salary extends EntityWithId {
      * Конструктор.
      */
     public Salary() {
-        super();
+        //
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Salary setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public Currency getCurrency() {

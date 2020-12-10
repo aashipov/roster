@@ -1,20 +1,19 @@
 package org.dummy.roster.backend;
 
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.dummy.roster.backend.entity.Salary;
-import org.junit.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.junit.*;
 import org.junit.runner.RunWith;
+import org.dummy.roster.backend.rm.EmployeeRM;
 import org.dummy.roster.backend.entity.Employee;
 import org.dummy.roster.backend.repository.EmployeeRepository;
+import static org.dummy.roster.backend.rm.EmployeeRM.select;
 import static org.junit.Assert.*;
 import static org.dummy.roster.backend.TestUtils.makeADummy;
 
@@ -23,6 +22,7 @@ import static org.dummy.roster.backend.TestUtils.makeADummy;
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
+@TestPropertySource(locations = "classpath:integration-test.properties")
 public class EmployeeRepositoryTest {
 
     private static Employee DUMMY = makeADummy();
@@ -50,21 +50,26 @@ public class EmployeeRepositoryTest {
         assertFalse("employee deleted", employeeRepository.findById(DUMMY.getId()).isPresent());
     }
 
+    private static void reassure(Employee found) {
+        assertNotNull("employee", found);
+        assertEquals("same name", TestUtils.DUMMY_NAME, found.getName());
+        assertNotNull("salary", found.getSalary());
+        assertEquals("currency", TestUtils.CURRENCY, found.getSalary().getCurrency());
+        assertNotNull("amount", found.getSalary().getAmount());
+        assertEquals("amount", TestUtils.AMOUNT, found.getSalary().getAmount());
+    }
 
     /**
      * {@link Test} {@link EmployeeRepository#findById(Object)}.
      */
     @Test
-    public void saveTest() {
+    public void readTest() {
         Employee found = employeeRepository.findById(DUMMY.getId()).get();
-        assertNotNull("employee", found);
-        assertEquals("same name", TestUtils.DUMMY_NAME, DUMMY.getName());
-        assertNotNull("salary", DUMMY.getSalary());
-        assertEquals("currency", TestUtils.CURRENCY, DUMMY.getSalary().getCurrency());
+        reassure(found);
     }
 
     private static <E> Collection<E> makeCollection(Iterable<E> iter) {
-        Collection<E> list = new ArrayList<E>();
+        Collection<E> list = new ArrayList<>(0);
         for (E item : iter) {
             list.add(item);
         }
@@ -104,39 +109,26 @@ public class EmployeeRepositoryTest {
         return 0;
     }
 
-    private final String EMPLOYEE_SELECT = "SELECT e.id AS eid, e.name, s.id AS sid, s.currency, s.amount FROM employee e " +
-            "LEFT JOIN salary s ON e.id = s.employee_id";
-    private final RowMapper<Employee> rm = (rs, rowNum) -> {
-        Employee employee = new Employee();
-        employee.setName(rs.getString("name"));
-        //employee.setId(UUID.fromString(rs.getString("eid")));
-        Salary salary = new Salary();
-        salary.setCurrency(Currency.getInstance(rs.getString("currency")));
-        salary.setAmount(BigDecimal.valueOf(rs.getDouble("amount")));
-        //employee.setId(UUID.fromString(rs.getString("sid")));
-        employee.setSalary(salary);
-        return employee;
-    };
-
     @Test
     public void selectComparison() {
-        List<Employee> found;
+        List<Employee> employeeList;
         long[] jpa = new long[SAMPLE_SIZE];
         long[] jdbc = new long[SAMPLE_SIZE];
         long start;
         for (int i = 0; i < SAMPLE_SIZE; i++) {
             start = System.nanoTime();
-            found = (List<Employee>) makeCollection(employeeRepository.findAll());
-            for (Employee employee : found) {
-                LOG.log(Level.FINE, "salary {0}", employee.getSalary().getAmount());
+            employeeList = (List<Employee>) makeCollection(employeeRepository.findAll());
+            for (Employee found : employeeList) {
+                reassure(found);
             }
             jpa[i] = System.nanoTime() - start;
         }
+        EmployeeRM erm = new EmployeeRM();
         for (int i = 0; i < SAMPLE_SIZE; i++) {
             start = System.nanoTime();
-            found = jdbcTemplate.query(EMPLOYEE_SELECT, rm);
-            for (Employee employee : found) {
-                LOG.log(Level.FINE, "salary {0}", employee.getSalary().getAmount());
+            employeeList = (List<Employee>) makeCollection(jdbcTemplate.query(select(), erm));
+            for (Employee found : employeeList) {
+                reassure(found);
             }
             jdbc[i] = System.nanoTime() - start;
         }
