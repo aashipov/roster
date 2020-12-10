@@ -1,6 +1,5 @@
 package org.dummy.roster.backend;
 
-import org.dummy.roster.backend.repository.EmployeeRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.dummy.roster.backend.rest.RosterRestController;
+import org.dummy.roster.backend.dao.EmployeeDAO;
+import org.dummy.roster.backend.repository.EmployeeRepository;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.dummy.roster.backend.utils.Constants.API_V1_EMPLOYEES;
 import static org.dummy.roster.backend.RestUtils.buildPost;
@@ -33,6 +34,12 @@ public class RosterRestControllerTest {
      */
     @MockBean
     private EmployeeRepository employeeRepository;
+
+    /**
+     * {@link EmployeeDAO}.
+     */
+    @MockBean
+    private EmployeeDAO employeeDAO;
 
     @Test
     public void saveTest() {

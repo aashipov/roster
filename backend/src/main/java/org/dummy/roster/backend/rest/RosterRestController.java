@@ -1,11 +1,11 @@
 package org.dummy.roster.backend.rest;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.dummy.roster.backend.dao.EmployeeDAO;
 import org.dummy.roster.backend.entity.Employee;
 import org.dummy.roster.backend.repository.EmployeeRepository;
 import static org.dummy.roster.backend.utils.Constants.API_V1_EMPLOYEES;
@@ -20,8 +20,13 @@ import static org.dummy.roster.backend.utils.Constants.API_V1_EMPLOYEES;
 @Validated
 public class RosterRestController {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+    private final EmployeeDAO employeeDAO;
+
+    public RosterRestController(EmployeeRepository e, EmployeeDAO d) {
+        this.employeeRepository = e;
+        this.employeeDAO = d;
+    }
 
     /**
      * Получить всех {@link Employee}.
@@ -29,7 +34,7 @@ public class RosterRestController {
      */
     @GetMapping
     List<Employee> readAll() {
-        return (List<Employee>) employeeRepository.findAll();
+        return (List<Employee>) employeeDAO.readAll();
     }
 
     /**
