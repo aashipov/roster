@@ -8,6 +8,7 @@ import org.dummy.roster.backend.dao.EmployeeDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.junit.*;
@@ -38,11 +39,15 @@ public class EmployeeRepositoryTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
     private EmployeeDAO employeeDAO;
 
     @PostConstruct
     private void pc() {
-        this.employeeDAO = new EmployeeDAO(this.jdbcTemplate);
+        this.employeeDAO = new EmployeeDAO(this.jdbcTemplate, namedParameterJdbcTemplate);
     }
 
     @Before
@@ -60,7 +65,6 @@ public class EmployeeRepositoryTest {
         assertNotNull("employee", found);
         assertEquals("same name", TestUtils.DUMMY_NAME, found.getName());
         assertNotNull("salary", found.getSalary());
-        assertEquals("currency", TestUtils.CURRENCY, found.getSalary().getCurrency());
         assertNotNull("amount", found.getSalary().getAmount());
         assertEquals("amount", TestUtils.AMOUNT, found.getSalary().getAmount());
     }

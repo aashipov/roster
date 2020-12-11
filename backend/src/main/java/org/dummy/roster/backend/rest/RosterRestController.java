@@ -45,7 +45,7 @@ public class RosterRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     Employee create(@RequestBody Employee employee) {
-        return (Employee) employeeRepository.save(employee);
+        return employeeDAO.create(employee);
     }
 
     /**

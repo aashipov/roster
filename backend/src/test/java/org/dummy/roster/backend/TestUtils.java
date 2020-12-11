@@ -32,7 +32,7 @@ public final class TestUtils {
      */
     public static Employee makeADummy() {
         Employee dummy = new Employee().setName(DUMMY_NAME);
-        Salary salary = new Salary().setEmployee(dummy).setCurrency(CURRENCY).setAmount(AMOUNT);
+        Salary salary = new Salary().setEmployee(dummy).setAmount(AMOUNT);
         dummy.setSalary(salary);
         return dummy;
     }

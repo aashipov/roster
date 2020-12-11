@@ -22,11 +22,6 @@ public class Salary implements Serializable {
     protected Long id;
 
     /**
-     * Валюта оклада.
-     */
-    private Currency currency;
-
-    /**
      * Оклад {@link Employee}.
      */
     private BigDecimal amount;
@@ -52,15 +47,6 @@ public class Salary implements Serializable {
 
     public Salary setId(Long id) {
         this.id = id;
-        return this;
-    }
-
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public Salary setCurrency(Currency c) {
-        this.currency = c;
         return this;
     }
 
