@@ -24,10 +24,8 @@ public class EmployeeDAO {
 
     private static final String ID = "id";
     private static final String NAME = "name";
-    private static final String CURRENCY = "currency";
     private static final String AMOUNT = "amount";
 
-    private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private static final String SELECT =
@@ -40,13 +38,12 @@ public class EmployeeDAO {
 
     private static final EmployeeRM ERM = new EmployeeRM();
 
-    public EmployeeDAO(JdbcTemplate j, NamedParameterJdbcTemplate n) {
-        this.jdbcTemplate = j;
+    public EmployeeDAO(NamedParameterJdbcTemplate n) {
         this.namedParameterJdbcTemplate = n;
     }
 
     public List<Employee> readAll() {
-        return jdbcTemplate.query(SELECT, ERM);
+        return namedParameterJdbcTemplate.query(SELECT, ERM);
     }
 
     private static Map<String, Object> salary(Salary salary) {
@@ -83,11 +80,10 @@ public class EmployeeDAO {
             employee.setId(rs.getLong("eid"));
             Salary salary = new Salary();
             salary.setAmount(BigDecimal.valueOf(rs.getDouble(AMOUNT)));
-            employee.setId(rs.getLong("sid"));
+            salary.setId(rs.getLong("sid"));
             employee.setSalary(salary);
+            salary.setEmployee(employee);
             return employee;
         }
     }
-
-
 }

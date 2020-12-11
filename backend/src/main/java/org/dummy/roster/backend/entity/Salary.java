@@ -2,7 +2,6 @@ package org.dummy.roster.backend.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Currency;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -67,5 +66,4 @@ public class Salary implements Serializable {
         this.amount = salary;
         return this;
     }
-
 }

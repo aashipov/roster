@@ -7,7 +7,6 @@ import javax.annotation.PostConstruct;
 import org.dummy.roster.backend.dao.EmployeeDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -37,17 +36,20 @@ public class EmployeeRepositoryTest {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
+    /**
+     * {@link NamedParameterJdbcTemplate}.
+     */
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    /**
+     * {@link EmployeeDAO}.
+     */
     private EmployeeDAO employeeDAO;
 
     @PostConstruct
     private void pc() {
-        this.employeeDAO = new EmployeeDAO(this.jdbcTemplate, namedParameterJdbcTemplate);
+        this.employeeDAO = new EmployeeDAO(this.namedParameterJdbcTemplate);
     }
 
     @Before
