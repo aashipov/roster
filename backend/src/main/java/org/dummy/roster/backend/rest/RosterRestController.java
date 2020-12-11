@@ -65,7 +65,7 @@ public class RosterRestController {
      */
     @DeleteMapping
     void deleteAll() {
-        employeeRepository.deleteAll();
+        employeeDAO.deleteAll();
     }
 
 }

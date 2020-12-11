@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,10 @@ public class EmployeeDAO {
     private static final String UPDATE_EMPLOYEE = "UPDATE employee SET name = :name WHERE id = :id";
 
     private static final String UPDATE_SALARY = "UPDATE salary SET amount = :amount, employee_id = :employee_id WHERE id = :id";
+
+    private static final String DELETE_ALL_SALARIES = "DELETE FROM salary WHERE (1 = 1)";
+
+    private static final String DELETE_ALL_EMPLOYEES = "DELETE FROM employee WHERE (1 = 1)";
 
     private static final EmployeeRM ERM = new EmployeeRM();
 
@@ -101,6 +106,11 @@ public class EmployeeDAO {
         sqlParams = new MapSqlParameterSource(params);
         namedParameterJdbcTemplate.update(UPDATE_SALARY, sqlParams);
         return read(employee.getId());
+    }
+
+    public void deleteAll() {
+        namedParameterJdbcTemplate.update(DELETE_ALL_SALARIES, Collections.emptyMap());
+        namedParameterJdbcTemplate.update(DELETE_ALL_EMPLOYEES, Collections.emptyMap());
     }
 
     private static class EmployeeRM implements RowMapper<Employee> {
