@@ -2,7 +2,6 @@ package org.dummy.roster.backend.dao;
 
 import org.dummy.roster.backend.entity.Employee;
 import org.dummy.roster.backend.entity.Salary;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,13 +26,21 @@ public class EmployeeDAO {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private static final String SELECT =
+    private static final String SELECT_ALL =
             "SELECT e.id AS eid, e.name, s.id AS sid, s.amount FROM employee e " +
                     "LEFT JOIN salary s ON e.id = s.employee_id";
+
+    private static final String SELECT_BY_ID = SELECT_ALL
+            + " "
+            + "WHERE e.id = :id";
 
     private static final String CREATE_SALARY = "INSERT INTO salary (amount, employee_id) VALUES (:amount, :employee_id)";
 
     private static final String CREATE_EMPLOYEE = "INSERT INTO employee (name) VALUES (:name)";
+
+    private static final String UPDATE_EMPLOYEE = "UPDATE employee SET name = :name WHERE id = :id";
+
+    private static final String UPDATE_SALARY = "UPDATE salary SET amount = :amount, employee_id = :employee_id WHERE id = :id";
 
     private static final EmployeeRM ERM = new EmployeeRM();
 
@@ -43,32 +49,58 @@ public class EmployeeDAO {
     }
 
     public List<Employee> readAll() {
-        return namedParameterJdbcTemplate.query(SELECT, ERM);
+        return namedParameterJdbcTemplate.query(SELECT_ALL, ERM);
+    }
+
+    private static Map<String, Object> byId(Long id) {
+        Map<String, Object> map = new HashMap<>(1);
+        if (null != id) {
+            map.put(ID, id);
+        }
+        return map;
     }
 
     private static Map<String, Object> salary(Salary salary) {
-        Map<String, Object> map = new HashMap<>(3);
+        Map<String, Object> map = byId(salary.getId());
         map.put("employee_id", salary.getEmployee().getId());
         map.put(AMOUNT, salary.getAmount());
         return map;
     }
 
+    private static Map<String, Object> employee(Employee employee) {
+        Map<String, Object> map = byId(employee.getId());
+        map.put(NAME, employee.getName());
+        return map;
+    }
+
+    public Employee read(Long id) {
+        SqlParameterSource sqlParams = new MapSqlParameterSource(byId(id));
+        return namedParameterJdbcTemplate.queryForObject(SELECT_BY_ID, sqlParams, ERM);
+    }
+
     public Employee create(Employee employee) {
         if (null != employee && null != employee.getSalary() && null == employee.getId()) {
-            Map<String, Object> employeeParams = new HashMap<>(1);
-            employeeParams.put(NAME, employee.getName());
-            KeyHolder keyHolder = new GeneratedKeyHolder();
-            SqlParameterSource employeeSqlParam = new MapSqlParameterSource(employeeParams);
-            namedParameterJdbcTemplate.update(CREATE_EMPLOYEE, employeeSqlParam, keyHolder, new String[]{ID});
-            employee.setId(keyHolder.getKey().longValue());
+            KeyHolder idHolder = new GeneratedKeyHolder();
+            SqlParameterSource sqlParams = new MapSqlParameterSource(employee(employee));
+            namedParameterJdbcTemplate.update(CREATE_EMPLOYEE, sqlParams, idHolder, new String[]{ID});
+            employee.setId(idHolder.getKey().longValue());
 
-            Map<String, Object> salaryParams = salary(employee.getSalary());
-            SqlParameterSource salarySqlParam = new MapSqlParameterSource(salaryParams);
-            keyHolder = new GeneratedKeyHolder();
-            namedParameterJdbcTemplate.update(CREATE_SALARY, salarySqlParam, keyHolder, new String[]{ID});
-            employee.getSalary().setId(keyHolder.getKey().longValue());
+            sqlParams = new MapSqlParameterSource(salary(employee.getSalary()));
+            idHolder = new GeneratedKeyHolder();
+            namedParameterJdbcTemplate.update(CREATE_SALARY, sqlParams, idHolder, new String[]{ID});
+            employee.getSalary().setId(idHolder.getKey().longValue());
         }
         return employee;
+    }
+
+    public Employee update(Employee employee) {
+        Map<String, Object> params = employee(employee);
+        SqlParameterSource sqlParams = new MapSqlParameterSource(params);
+        namedParameterJdbcTemplate.update(UPDATE_EMPLOYEE, sqlParams);
+        params = salary(employee.getSalary());
+        sqlParams = new MapSqlParameterSource(params);
+        namedParameterJdbcTemplate.update(UPDATE_SALARY, sqlParams);
+        return read(employee.getId());
     }
 
     private static class EmployeeRM implements RowMapper<Employee> {

@@ -54,8 +54,9 @@ public class RosterRestController {
      * @return {@link Employee}
      */
     @PutMapping("/{id}")
-    Employee update(@PathVariable String id, @RequestBody Employee employee) {
-        return employeeRepository.save(employee);
+    Employee update(@PathVariable Long id, @RequestBody Employee employee) {
+        employee.setId(id);
+        return employeeDAO.update(employee);
     }
 
     /**
