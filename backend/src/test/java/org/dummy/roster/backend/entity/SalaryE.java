@@ -1,36 +1,43 @@
 package org.dummy.roster.backend.entity;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-/**
- * Оклад {@link Employee}.
- */
-public class Salary implements Serializable {
+import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
+/**
+ * Оклад {@link EmployeeE}.
+ */
+@Entity
+@Table(name = "salary")
+public class SalaryE implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
      * Первичный ключ.
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;
 
     /**
-     * Оклад {@link Employee}.
+     * Оклад {@link EmployeeE}.
      */
     private BigDecimal amount;
 
     /**
-     * {@link Employee}.
+     * {@link EmployeeE}.
      */
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id")
     @JsonBackReference
-    private Employee employee;
+    private EmployeeE employee;
 
     /**
      * Конструктор.
      */
-    public Salary() {
+    public SalaryE() {
         //
     }
 
@@ -38,16 +45,16 @@ public class Salary implements Serializable {
         return id;
     }
 
-    public Salary setId(Long id) {
+    public SalaryE setId(Long id) {
         this.id = id;
         return this;
     }
 
-    public Employee getEmployee() {
+    public EmployeeE getEmployee() {
         return employee;
     }
 
-    public Salary setEmployee(Employee employee) {
+    public SalaryE setEmployee(EmployeeE employee) {
         this.employee = employee;
         return this;
     }
@@ -56,7 +63,7 @@ public class Salary implements Serializable {
         return amount;
     }
 
-    public Salary setAmount(BigDecimal salary) {
+    public SalaryE setAmount(BigDecimal salary) {
         this.amount = salary;
         return this;
     }

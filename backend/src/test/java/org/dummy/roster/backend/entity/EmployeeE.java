@@ -1,18 +1,23 @@
 package org.dummy.roster.backend.entity;
 
-import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Сотрудник.
  */
-public class Employee implements Serializable {
-
+@Entity
+@Table(name = "employee")
+public class EmployeeE implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
      * Первичный ключ.
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;
 
     /**
@@ -20,13 +25,14 @@ public class Employee implements Serializable {
      */
     private String name;
 
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private Salary salary;
+    private SalaryE salary;
 
     /**
      * Конструктор.
      */
-    public Employee() {
+    public EmployeeE() {
         //
     }
 
@@ -34,7 +40,7 @@ public class Employee implements Serializable {
         return id;
     }
 
-    public Employee setId(Long id) {
+    public EmployeeE setId(Long id) {
         this.id = id;
         return this;
     }
@@ -43,16 +49,16 @@ public class Employee implements Serializable {
         return name;
     }
 
-    public Employee setName(String name) {
+    public EmployeeE setName(String name) {
         this.name = name;
         return this;
     }
 
-    public Salary getSalary() {
+    public SalaryE getSalary() {
         return salary;
     }
 
-    public Employee setSalary(Salary salary) {
+    public EmployeeE setSalary(SalaryE salary) {
         this.salary = salary;
         return this;
     }

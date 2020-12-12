@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.dummy.roster.backend.dao.EmployeeDAO;
+import org.dummy.roster.backend.entity.EmployeeE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -13,28 +14,28 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.dummy.roster.backend.entity.Employee;
-import org.dummy.roster.backend.repository.EmployeeRepository;
+
 import static org.junit.Assert.*;
 import static org.dummy.roster.backend.TestUtils.makeADummy;
 
 /**
- * {@link Test} {@link EmployeeRepository}.
+ * {@link Test} {@link EmployeeERepository}.
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @TestPropertySource(locations = "classpath:integration-test.properties")
 public class EmployeeRepositoryTest {
 
-    private static Employee DUMMY = makeADummy();
+    private static EmployeeE DUMMY = makeADummy();
     private static final int SAMPLE_SIZE = 100_000;
     private static final String PLUS_MINUS_SIGN = "\u00B1";
     private static final Logger LOG = Logger.getLogger(EmployeeRepositoryTest.class.getSimpleName());
 
     /**
-     * {@link EmployeeRepository}.
+     * {@link EmployeeERepository}.
      */
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private EmployeeERepository employeeRepository;
 
     /**
      * {@link NamedParameterJdbcTemplate}.
@@ -63,6 +64,14 @@ public class EmployeeRepositoryTest {
         assertFalse("employee deleted", employeeRepository.findById(DUMMY.getId()).isPresent());
     }
 
+    private static void reassureE(EmployeeE found) {
+        assertNotNull("employee", found);
+        assertEquals("same name", TestUtils.DUMMY_NAME, found.getName());
+        assertNotNull("salary", found.getSalary());
+        assertNotNull("amount", found.getSalary().getAmount());
+        assertEquals("amount", TestUtils.AMOUNT, found.getSalary().getAmount());
+    }
+
     private static void reassure(Employee found) {
         assertNotNull("employee", found);
         assertEquals("same name", TestUtils.DUMMY_NAME, found.getName());
@@ -72,12 +81,12 @@ public class EmployeeRepositoryTest {
     }
 
     /**
-     * {@link Test} {@link EmployeeRepository#findById(Object)}.
+     * {@link Test} {@link EmployeeERepository#findById(Object)}.
      */
     @Test
     public void readTest() {
-        Employee found = employeeRepository.findById(DUMMY.getId()).get();
-        reassure(found);
+        EmployeeE found = employeeRepository.findById(DUMMY.getId()).get();
+        reassureE(found);
     }
 
     private static <E> Collection<E> makeCollection(Iterable<E> iter) {
@@ -123,21 +132,20 @@ public class EmployeeRepositoryTest {
 
     @Test
     public void selectComparison() {
-        List<Employee> employeeList;
         long[] jpa = new long[SAMPLE_SIZE];
         long[] jdbc = new long[SAMPLE_SIZE];
         long start;
         for (int i = 0; i < SAMPLE_SIZE; i++) {
             start = System.nanoTime();
-            employeeList = (List<Employee>) makeCollection(employeeRepository.findAll());
-            for (Employee found : employeeList) {
-                reassure(found);
+            List<EmployeeE> employeeeList = (List<EmployeeE>) makeCollection(employeeRepository.findAll());
+            for (EmployeeE found : employeeeList) {
+                reassureE(found);
             }
             jpa[i] = System.nanoTime() - start;
         }
         for (int i = 0; i < SAMPLE_SIZE; i++) {
             start = System.nanoTime();
-            employeeList = (List<Employee>) makeCollection(employeeDAO.readAll());
+            List<Employee> employeeList = (List<Employee>) makeCollection(employeeDAO.readAll());
             for (Employee found : employeeList) {
                 reassure(found);
             }

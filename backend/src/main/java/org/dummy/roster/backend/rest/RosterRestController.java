@@ -7,7 +7,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.dummy.roster.backend.dao.EmployeeDAO;
 import org.dummy.roster.backend.entity.Employee;
-import org.dummy.roster.backend.repository.EmployeeRepository;
 import static org.dummy.roster.backend.utils.Constants.API_V1_EMPLOYEES;
 
 
@@ -20,11 +19,9 @@ import static org.dummy.roster.backend.utils.Constants.API_V1_EMPLOYEES;
 @Validated
 public class RosterRestController {
 
-    private final EmployeeRepository employeeRepository;
     private final EmployeeDAO employeeDAO;
 
-    public RosterRestController(EmployeeRepository e, EmployeeDAO d) {
-        this.employeeRepository = e;
+    public RosterRestController(EmployeeDAO d) {
         this.employeeDAO = d;
     }
 

@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.dummy.roster.backend.rest.RosterRestController;
 import org.dummy.roster.backend.dao.EmployeeDAO;
-import org.dummy.roster.backend.repository.EmployeeRepository;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.dummy.roster.backend.utils.Constants.API_V1_EMPLOYEES;
 import static org.dummy.roster.backend.RestUtils.buildPost;
@@ -30,10 +30,10 @@ public class RosterRestControllerTest {
     private MockMvc mvc;
 
     /**
-     * {@link EmployeeRepository}.
+     * {@link EmployeeERepository}.
      */
     @MockBean
-    private EmployeeRepository employeeRepository;
+    private EmployeeERepository employeeRepository;
 
     /**
      * {@link EmployeeDAO}.

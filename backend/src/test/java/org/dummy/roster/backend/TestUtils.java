@@ -1,7 +1,9 @@
 package org.dummy.roster.backend;
 
 import org.dummy.roster.backend.entity.Employee;
+import org.dummy.roster.backend.entity.EmployeeE;
 import org.dummy.roster.backend.entity.Salary;
+import org.dummy.roster.backend.entity.SalaryE;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -27,12 +29,12 @@ public final class TestUtils {
     }
 
     /**
-     * Создать тестового {@link Employee}.
+     * Создать тестового {@link EmployeeE}.
      * @return {@link Employee}
      */
-    public static Employee makeADummy() {
-        Employee dummy = new Employee().setName(DUMMY_NAME);
-        Salary salary = new Salary().setEmployee(dummy).setAmount(AMOUNT);
+    public static EmployeeE makeADummy() {
+        EmployeeE dummy = new EmployeeE().setName(DUMMY_NAME);
+        SalaryE salary = new SalaryE().setEmployee(dummy).setAmount(AMOUNT);
         dummy.setSalary(salary);
         return dummy;
     }

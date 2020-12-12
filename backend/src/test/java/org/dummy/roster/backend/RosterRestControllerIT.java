@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.dummy.roster.backend.repository.EmployeeRepository;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.dummy.roster.backend.RestUtils.buildPost;
 import static org.dummy.roster.backend.TestUtils.makeADummy;
@@ -31,10 +31,10 @@ public class RosterRestControllerIT {
     private MockMvc mvc;
 
     /**
-     * {@link EmployeeRepository}.
+     * {@link EmployeeERepository}.
      */
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private EmployeeERepository employeeRepository;
 
     @Test
     public void saveTest() {
