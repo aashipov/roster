@@ -18,7 +18,6 @@ import java.util.UUID;
 public final class TestUtils {
 
     public static final String DUMMY_NAME = "John Doe";
-    public static final Currency CURRENCY = Currency.getInstance("RUR");
     public static final BigDecimal AMOUNT = BigDecimal.valueOf(1.23);
 
     /**
