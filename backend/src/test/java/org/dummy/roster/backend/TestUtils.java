@@ -1,19 +1,14 @@
 package org.dummy.roster.backend;
 
-import org.dummy.roster.backend.entity.Employee;
+import org.dummy.roster.backend.dto.Employee;
 import org.dummy.roster.backend.entity.EmployeeE;
-import org.dummy.roster.backend.entity.Salary;
+import org.dummy.roster.backend.dto.Salary;
 import org.dummy.roster.backend.entity.SalaryE;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-import static org.dummy.roster.backend.dao.EmployeeDAO.AMOUNT_COLUMN_NAME;
-import static org.dummy.roster.backend.dao.EmployeeDAO.NAME_COLUMN_NAME;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -70,14 +65,6 @@ public final class TestUtils {
         assertNotNull("salary", found.getSalary());
         assertNotNull("amount", found.getSalary().getAmount());
         assertEquals("amount", DUMMY_AMOUNT, found.getSalary().getAmount());
-    }
-
-    public static <E> Collection<E> makeCollection(Iterable<E> iter) {
-        Collection<E> list = new ArrayList<>(0);
-        for (E item : iter) {
-            list.add(item);
-        }
-        return list;
     }
 
 }

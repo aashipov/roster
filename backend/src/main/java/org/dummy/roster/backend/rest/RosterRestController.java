@@ -1,12 +1,21 @@
 package org.dummy.roster.backend.rest;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.logging.Level;
+
+import org.dummy.roster.backend.entity.EmployeeE;
+import org.dummy.roster.backend.repo.EmployeeERepository;
+import org.dummy.roster.backend.utils.MathsUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.dummy.roster.backend.dao.EmployeeDAO;
-import org.dummy.roster.backend.entity.Employee;
+import org.dummy.roster.backend.dto.Employee;
+
+import static org.dummy.roster.backend.utils.CollectionUtils.makeCollection;
 import static org.dummy.roster.backend.utils.Constants.API_V1_EMPLOYEES;
 
 
@@ -20,9 +29,25 @@ import static org.dummy.roster.backend.utils.Constants.API_V1_EMPLOYEES;
 public class RosterRestController {
 
     private final EmployeeDAO employeeDAO;
+    private final EmployeeERepository employeeERepository;
 
-    public RosterRestController(EmployeeDAO d) {
+    public RosterRestController(EmployeeDAO d, EmployeeERepository r) {
         this.employeeDAO = d;
+        this.employeeERepository = r;
+    }
+
+    private String springDataReadStats() {
+        long[] springData = new long[MathsUtils.SAMPLE_SIZE];
+        int[] springDataCount = new int[MathsUtils.SAMPLE_SIZE];
+        long start;
+        for (int i = 0; i < MathsUtils.SAMPLE_SIZE; i++) {
+            start = System.nanoTime();
+            springDataCount[i] = makeCollection(employeeERepository.findAll()).size();
+            springData[i] = System.nanoTime() - start;
+        }
+        Assert.isTrue(springDataCount[MathsUtils.SAMPLE_SIZE - 1] > 0, "");
+        double jpaAvg = MathsUtils.avg(springData);
+        return "spring data " + BigDecimal.valueOf(jpaAvg) + MathsUtils.PLUS_MINUS_SIGN + BigDecimal.valueOf(MathsUtils.sd(springData, jpaAvg));
     }
 
     /**
@@ -40,7 +65,7 @@ public class RosterRestController {
      */
     @GetMapping(value = "/compare")
     String compare() {
-        return employeeDAO.compare();
+        return employeeDAO.compare() + "\n" + this.springDataReadStats();
     }
 
     /**

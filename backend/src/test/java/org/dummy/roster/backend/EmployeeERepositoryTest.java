@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.dummy.roster.backend.repo.EmployeeERepository;
+import org.dummy.roster.backend.utils.CollectionUtils;
 import org.dummy.roster.backend.utils.MathsUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -53,7 +55,7 @@ public class EmployeeERepositoryTest {
         long start;
         for (int i = 0; i < MathsUtils.SAMPLE_SIZE; i++) {
             start = System.nanoTime();
-            List<EmployeeE> employeeeList = (List<EmployeeE>) TestUtils.makeCollection(employeeRepository.findAll());
+            List<EmployeeE> employeeeList = (List<EmployeeE>) CollectionUtils.makeCollection(employeeRepository.findAll());
             for (EmployeeE found : employeeeList) {
                 TestUtils.reassureE(found);
             }

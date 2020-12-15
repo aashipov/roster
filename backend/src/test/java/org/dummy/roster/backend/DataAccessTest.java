@@ -7,6 +7,8 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.dummy.roster.backend.dao.EmployeeDAO;
+import org.dummy.roster.backend.repo.EmployeeERepository;
+import org.dummy.roster.backend.utils.CollectionUtils;
 import org.dummy.roster.backend.utils.MathsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
@@ -14,7 +16,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.junit.*;
 import org.junit.runner.RunWith;
-import org.dummy.roster.backend.entity.Employee;
+import org.dummy.roster.backend.dto.Employee;
 import static org.dummy.roster.backend.TestUtils.*;
 import static org.junit.Assert.assertEquals;
 
@@ -74,7 +76,7 @@ public class DataAccessTest {
 
         for (int i = 0; i < MathsUtils.SAMPLE_SIZE; i++) {
             start = System.nanoTime();
-            List<Employee> employeeList = (List<Employee>) TestUtils.makeCollection(employeeDAO.readAll());
+            List<Employee> employeeList = (List<Employee>) CollectionUtils.makeCollection(employeeDAO.readAll());
             for (Employee found : employeeList) {
                 TestUtils.reassure(found);
             }
@@ -82,7 +84,7 @@ public class DataAccessTest {
         }
         for (int i = 0; i < MathsUtils.SAMPLE_SIZE; i++) {
             start = System.nanoTime();
-            List<Employee> employeeList = (List<Employee>) TestUtils.makeCollection(employeeDAO.readAll2());
+            List<Employee> employeeList = (List<Employee>) CollectionUtils.makeCollection(employeeDAO.readAll2());
             for (Employee found : employeeList) {
                 TestUtils.reassure(found);
             }

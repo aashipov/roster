@@ -1,4 +1,4 @@
-package org.dummy.roster.backend.entity;
+package org.dummy.roster.backend.dto;
 
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonManagedReference;

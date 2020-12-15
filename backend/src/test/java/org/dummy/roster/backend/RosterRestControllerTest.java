@@ -1,5 +1,6 @@
 package org.dummy.roster.backend;
 
+import org.dummy.roster.backend.repo.EmployeeERepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package org.dummy.roster.backend;
+package org.dummy.roster.backend.repo;
 
 import org.dummy.roster.backend.entity.EmployeeE;
 import org.springframework.data.repository.PagingAndSortingRepository;

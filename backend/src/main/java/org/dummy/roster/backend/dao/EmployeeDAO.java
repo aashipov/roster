@@ -1,7 +1,13 @@
 package org.dummy.roster.backend.dao;
 
-import org.dummy.roster.backend.entity.Employee;
-import org.dummy.roster.backend.entity.Salary;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.*;
+import org.dummy.roster.backend.dto.Employee;
+import org.dummy.roster.backend.dto.Salary;
 import org.dummy.roster.backend.utils.MathsUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -10,22 +16,13 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.springframework.util.Assert;
 
 import static org.dummy.roster.backend.utils.MathsUtils.PLUS_MINUS_SIGN;
 
 @Repository
 public class EmployeeDAO {
 
-    private static final Logger LOG = Logger.getLogger(EmployeeDAO.class.getSimpleName());
     private static final String ID = "id";
     public static final String NAME_COLUMN_NAME = "name";
     public static final String AMOUNT_COLUMN_NAME = "amount";
@@ -76,17 +73,20 @@ public class EmployeeDAO {
     public String compare() {
         long[] springJdbc = new long[MathsUtils.SAMPLE_SIZE];
         long[] pureJdbc = new long[MathsUtils.SAMPLE_SIZE];
+        int[] springJdbcCount = new int[MathsUtils.SAMPLE_SIZE];
+        int[] pureJdbcCount = new int[MathsUtils.SAMPLE_SIZE];
         long start;
-        start = System.nanoTime();
         for (int i = 0; i < MathsUtils.SAMPLE_SIZE; i++) {
-            this.readAll().size();
+            start = System.nanoTime();
+            springJdbcCount[i] = this.readAll().size();
             springJdbc[i] = System.nanoTime() - start;
         }
         for (int i = 0; i < MathsUtils.SAMPLE_SIZE; i++) {
             start = System.nanoTime();
-            this.readAll2().size();
+            pureJdbcCount[i] = this.readAll2().size();
             pureJdbc[i] = System.nanoTime() - start;
         }
+        Assert.isTrue(springJdbcCount[MathsUtils.SAMPLE_SIZE - 1] == pureJdbcCount[MathsUtils.SAMPLE_SIZE - 1] && springJdbcCount[MathsUtils.SAMPLE_SIZE - 1] > 0, "");
         double springJdbcAvg = MathsUtils.avg(springJdbc);
         double pureJdbcAvg = MathsUtils.avg(pureJdbc);
         return "springJdbc " + BigDecimal.valueOf(springJdbcAvg) + PLUS_MINUS_SIGN + BigDecimal.valueOf(MathsUtils.sd(springJdbc, springJdbcAvg))
