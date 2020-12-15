@@ -2,6 +2,7 @@ package org.dummy.roster.backend.dao;
 
 import org.dummy.roster.backend.entity.Employee;
 import org.dummy.roster.backend.entity.Salary;
+import org.dummy.roster.backend.utils.MathsUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -11,25 +12,29 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Statement;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.dummy.roster.backend.utils.MathsUtils.PLUS_MINUS_SIGN;
 
 @Repository
 public class EmployeeDAO {
 
+    private static final Logger LOG = Logger.getLogger(EmployeeDAO.class.getSimpleName());
     private static final String ID = "id";
-    private static final String NAME = "name";
-    private static final String AMOUNT = "amount";
+    public static final String NAME_COLUMN_NAME = "name";
+    public static final String AMOUNT_COLUMN_NAME = "amount";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private static final String SELECT_ALL =
+    public static final String SELECT_ALL =
             "SELECT e.id AS eid, e.name, s.id AS sid, s.amount FROM employee e " +
-                    "LEFT JOIN salary s ON e.id = s.employee_id";
+                    "JOIN salary s ON e.id = s.employee_id";
 
     private static final String SELECT_BY_ID = SELECT_ALL
             + " "
@@ -57,6 +62,37 @@ public class EmployeeDAO {
         return namedParameterJdbcTemplate.query(SELECT_ALL, ERM);
     }
 
+    public List<Employee> readAll2() {
+        try (Connection conn = namedParameterJdbcTemplate.getJdbcTemplate().getDataSource().getConnection();
+        Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery(SELECT_ALL);
+            return readEmployees(rs);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    public String compare() {
+        long[] springJdbc = new long[MathsUtils.SAMPLE_SIZE];
+        long[] pureJdbc = new long[MathsUtils.SAMPLE_SIZE];
+        long start;
+        start = System.nanoTime();
+        for (int i = 0; i < MathsUtils.SAMPLE_SIZE; i++) {
+            this.readAll().size();
+            springJdbc[i] = System.nanoTime() - start;
+        }
+        for (int i = 0; i < MathsUtils.SAMPLE_SIZE; i++) {
+            start = System.nanoTime();
+            this.readAll2().size();
+            pureJdbc[i] = System.nanoTime() - start;
+        }
+        double springJdbcAvg = MathsUtils.avg(springJdbc);
+        double pureJdbcAvg = MathsUtils.avg(pureJdbc);
+        return "springJdbc " + BigDecimal.valueOf(springJdbcAvg) + PLUS_MINUS_SIGN + BigDecimal.valueOf(MathsUtils.sd(springJdbc, springJdbcAvg))
+                + "\npureJdbc " + BigDecimal.valueOf(pureJdbcAvg) + PLUS_MINUS_SIGN + BigDecimal.valueOf(MathsUtils.sd(pureJdbc, pureJdbcAvg));
+    }
+
     private static Map<String, Object> byId(Long id) {
         Map<String, Object> map = new HashMap<>(1);
         if (null != id) {
@@ -68,13 +104,13 @@ public class EmployeeDAO {
     private static Map<String, Object> salary(Salary salary) {
         Map<String, Object> map = byId(salary.getId());
         map.put("employee_id", salary.getEmployee().getId());
-        map.put(AMOUNT, salary.getAmount());
+        map.put(AMOUNT_COLUMN_NAME, salary.getAmount());
         return map;
     }
 
     private static Map<String, Object> employee(Employee employee) {
         Map<String, Object> map = byId(employee.getId());
-        map.put(NAME, employee.getName());
+        map.put(NAME_COLUMN_NAME, employee.getName());
         return map;
     }
 
@@ -118,14 +154,34 @@ public class EmployeeDAO {
         @Override
         public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
             Employee employee = new Employee();
-            employee.setName(rs.getString(NAME));
+            employee.setName(rs.getString(NAME_COLUMN_NAME));
             employee.setId(rs.getLong("eid"));
             Salary salary = new Salary();
-            salary.setAmount(BigDecimal.valueOf(rs.getDouble(AMOUNT)));
+            salary.setAmount(BigDecimal.valueOf(rs.getDouble(AMOUNT_COLUMN_NAME)));
             salary.setId(rs.getLong("sid"));
             employee.setSalary(salary);
             salary.setEmployee(employee);
             return employee;
         }
+    }
+
+    public static List<Employee> readEmployees(ResultSet rs) {
+        List<Employee> list = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                Employee employee = new Employee();
+                employee.setName(rs.getString(NAME_COLUMN_NAME));
+                employee.setId(rs.getLong("eid"));
+                Salary salary = new Salary();
+                salary.setAmount(BigDecimal.valueOf(rs.getDouble(AMOUNT_COLUMN_NAME)));
+                salary.setId(rs.getLong("sid"));
+                employee.setSalary(salary);
+                salary.setEmployee(employee);
+                list.add(employee);
+            }
+        } catch (SQLException throwables) {
+            //
+        }
+        return list;
     }
 }

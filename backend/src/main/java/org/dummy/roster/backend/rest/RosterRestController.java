@@ -35,6 +35,15 @@ public class RosterRestController {
     }
 
     /**
+     * Получить всех {@link Employee}.
+     * @return {@link List} {@link Employee}
+     */
+    @GetMapping(value = "/compare")
+    String compare() {
+        return employeeDAO.compare();
+    }
+
+    /**
      * Создать {@link Employee}.
      * @param employee создаваемый {@link Employee}
      * @return созданный {@link Employee}

@@ -4,13 +4,18 @@ import org.dummy.roster.backend.entity.Employee;
 import org.dummy.roster.backend.entity.EmployeeE;
 import org.dummy.roster.backend.entity.Salary;
 import org.dummy.roster.backend.entity.SalaryE;
-import org.springframework.http.HttpMethod;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.math.BigDecimal;
-import java.net.URI;
-import java.util.Currency;
-import java.util.UUID;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static org.dummy.roster.backend.dao.EmployeeDAO.AMOUNT_COLUMN_NAME;
+import static org.dummy.roster.backend.dao.EmployeeDAO.NAME_COLUMN_NAME;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Вспомогательные функции тестов.
@@ -18,7 +23,9 @@ import java.util.UUID;
 public final class TestUtils {
 
     public static final String DUMMY_NAME = "John Doe";
-    public static final BigDecimal AMOUNT = BigDecimal.valueOf(1.23);
+    public static final BigDecimal DUMMY_AMOUNT = BigDecimal.valueOf(1.23);
+    public static final EmployeeE DUMMY_EMPLOYEE_E = makeDummyEmployeeE();
+    public static final Employee DUMMY_EMPLOYEE = makeDummyEmployee();
 
     /**
      * Конструктор.
@@ -29,12 +36,48 @@ public final class TestUtils {
 
     /**
      * Создать тестового {@link EmployeeE}.
-     * @return {@link Employee}
+     * @return {@link EmployeeE}
      */
-    public static EmployeeE makeADummy() {
+    public static EmployeeE makeDummyEmployeeE() {
         EmployeeE dummy = new EmployeeE().setName(DUMMY_NAME);
-        SalaryE salary = new SalaryE().setEmployee(dummy).setAmount(AMOUNT);
+        SalaryE salary = new SalaryE().setEmployee(dummy).setAmount(DUMMY_AMOUNT);
         dummy.setSalary(salary);
         return dummy;
     }
+
+    /**
+     * Создать тестового {@link Employee}.
+     * @return {@link Employee}
+     */
+    public static Employee makeDummyEmployee() {
+        Employee dummy = new Employee().setName(DUMMY_NAME);
+        Salary salary = new Salary().setEmployee(dummy).setAmount(DUMMY_AMOUNT);
+        dummy.setSalary(salary);
+        return dummy;
+    }
+
+    public static void reassureE(EmployeeE found) {
+        assertNotNull("employee", found);
+        assertEquals("same name", DUMMY_NAME, found.getName());
+        assertNotNull("salary", found.getSalary());
+        assertNotNull("amount", found.getSalary().getAmount());
+        assertEquals("amount", DUMMY_AMOUNT, found.getSalary().getAmount());
+    }
+
+    public static void reassure(Employee found) {
+        assertNotNull("employee", found);
+        assertEquals("same name", DUMMY_NAME, found.getName());
+        assertNotNull("salary", found.getSalary());
+        assertNotNull("amount", found.getSalary().getAmount());
+        assertEquals("amount", DUMMY_AMOUNT, found.getSalary().getAmount());
+    }
+
+    public static <E> Collection<E> makeCollection(Iterable<E> iter) {
+        Collection<E> list = new ArrayList<>(0);
+        for (E item : iter) {
+            list.add(item);
+        }
+        return list;
+    }
+
 }

@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.dummy.roster.backend.RestUtils.buildPost;
-import static org.dummy.roster.backend.TestUtils.makeADummy;
+import static org.dummy.roster.backend.TestUtils.makeDummyEmployeeE;
 import static org.dummy.roster.backend.utils.Constants.API_V1_EMPLOYEES;
 
 /**
@@ -39,7 +39,7 @@ public class RosterRestControllerIT {
     @Test
     public void saveTest() {
         try {
-            mvc.perform(buildPost(API_V1_EMPLOYEES, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, makeADummy()))
+            mvc.perform(buildPost(API_V1_EMPLOYEES, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, makeDummyEmployeeE()))
                     .andExpect(status().isCreated());
         } catch (Exception e) {
 
