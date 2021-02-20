@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <node.version>v12.14.0</node.version>
+        <node.version>v12.20.2</node.version>
     </properties>
 
     <build>
