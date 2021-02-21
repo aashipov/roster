@@ -1,18 +1,17 @@
-FROM aashipov/roster:builder AS builder
+FROM aashipov/htmltopdf:buildbed AS builder
+ARG BUILD_DIR=/dummy/build
 USER root
-WORKDIR /dummy/build/
-COPY --chown=dummy:dummy backend ./backend/
-COPY --chown=dummy:dummy frontend ./frontend/
-COPY pom.xml .
+WORKDIR ${BUILD_DIR}
+COPY --chown=dummy:dummy ./ ./
 USER dummy
-WORKDIR /dummy/build/
+WORKDIR ${BUILD_DIR}
 RUN mvn clean install
 
-FROM aashipov/roster:base
+FROM aashipov/htmltopdf:base
+ARG BUILD_DIR=/dummy/build/
 USER root
-COPY --chown=dummy:dummy --from=builder /dummy/build/backend/target/roster.jar /dummy/
+COPY --chown=dummy:dummy --from=builder ${BUILD_DIR}/backend/target/roster.jar /dummy/app.jar
 WORKDIR /dummy/
 EXPOSE 8080
 USER dummy
-CMD java -jar roster.jar
-HEALTHCHECK CMD curl -f http://localhost:8080/actuator/health || exit 1
+CMD java -jar app.jar
