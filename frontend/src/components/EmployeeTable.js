@@ -6,17 +6,20 @@ import {fetchAllEmployees} from "../actions";
 /**
  * Таблица Сотркдники.
  */
-const TableHeader = () => {
-    return (
-        <h3>Оклады сотрудников</h3>,
-        <thead>
-        <tr>
-            <th>Сотрудник</th>
-            <th>Оклад</th>
-            <th/>
-        </tr>
-        </thead>
-    )
+
+class TableHeader extends Component {
+    render() {
+        return (
+            <h3>Оклады сотрудников</h3>,
+                <thead>
+                <tr>
+                    <th>Сотрудник</th>
+                    <th>Оклад</th>
+                    <th/>
+                </tr>
+                </thead>
+        )
+    }
 };
 
 class EmployeeTable extends Component {
@@ -34,26 +37,14 @@ class EmployeeTable extends Component {
         return (
             <table>
                 <TableHeader/>
-                <tbody>
-                {employees.map((employee, index) => {
-                    return (<Employee key={index} employee={employee}/>)
-                })}
-                </tbody>
+                <tbody>{employees.map((employee, index) => <Employee key={index} employee={employee}/>)}</tbody>
             </table>
         )
     }
-}
-
-const mapStateToProps = function (state) {
-    return {
-        employees: state.employees
-    }
 };
 
-const mapDispatchToProps = function (dispatch) {
-    return {
-        fetchAllEmployees: () => dispatch(fetchAllEmployees())
-    }
-};
+const mapStateToProps = (state) => ({employees: state.employees});
+
+const mapDispatchToProps = (dispatch) => ({fetchAllEmployees: () => dispatch(fetchAllEmployees())});
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeeTable);
