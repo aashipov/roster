@@ -20,6 +20,7 @@ Thumbs.db
 /frontend/node_modules/
 /frontend/node/
 /frontend/public/vendor.js.LICENSE.txt
+/frontend/public/main.js.LICENSE.txt
 /backend/src/main/resources/static/index.html
 /backend/src/main/resources/static/main.js
 /backend/src/main/resources/static/vendor.js

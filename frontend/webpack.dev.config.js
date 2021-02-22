@@ -16,18 +16,6 @@ module.exports = {
             }
         ]
     },
-    optimization: {
-        splitChunks: {
-            cacheGroups: {
-                vendor: {
-                    chunks: "initial",
-                    name: "vendor",
-                    test: /[\\/]node_modules[\\/]/,
-                    enforce: true,
-                },
-            },
-        },
-    },
     devServer: {
         contentBase: path.join(__dirname, 'public'),
         disableHostCheck: true,
