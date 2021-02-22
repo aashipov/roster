@@ -1,7 +1,8 @@
 import {ADD_EMPLOYEE, DELETE_ALL, GET_ALL_EMPLOYEES, UDATE_EMPLOYEE} from '../constants';
 import {combineReducers} from "redux";
 
-const employees = (action, state = []) => {
+// NOSONAR
+const employees = (state = [], action) => {
     switch (action.type) {
         case GET_ALL_EMPLOYEES : {
             return Object.assign([], state, action.employees);
