@@ -9,24 +9,30 @@ const AddEmployee = ({dispatch}) => {
     let nameInput, amountInput;
     return (
         <div>
-            <form id={'add-employee'} onSubmit={evt => {
-                evt.preventDefault();
-                if (!('' + nameInput.value).trim() || !('' + amountInput.value).trim()) {
-                    return;
+            <form id={'add-employee'} onSubmit={
+                evt => {
+                    evt.preventDefault();
+                    if (!('' + nameInput.value).trim() || !('' + amountInput.value).trim()) {
+                        return;
+                    }
+                    dispatch(addEmployee(nameInput.value, amountInput.value));
+                    nameInput.value = '';
+                    amountInput.value = '';
                 }
-                dispatch(addEmployee(nameInput.value, amountInput.value));
-                nameInput.value = '';
-                amountInput.value = '';
-            }}>
+            }>
                 <h3>Ввод сотрудника</h3>
                 <label>Имя:</label>
-                <input id={'add-employee-name'} ref={node => {
-                    nameInput = node;
-                }}/>
+                <input id={'add-employee-name'} ref={
+                    node => {
+                        nameInput = node;
+                    }
+                }/>
                 <label>Оклад:</label>
-                <input id={'add-employee-amount'} ref={node => {
-                    amountInput = node;
-                }}/>
+                <input id={'add-employee-amount'} ref={
+                    node => {
+                        amountInput = node;
+                    }
+                }/>
                 <button id={'add-employee-submit'} type={"submit"}>Создать</button>
             </form>
         </div>

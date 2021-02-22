@@ -44,10 +44,6 @@ class EmployeeRow extends Component {
     }
 }
 
-const mapDispatchToProps = function (dispatch) {
-    return {
-        saveEmployee: employee => dispatch(saveEmployee(employee))
-    }
-};
+const mapDispatchToProps = (dispatch) => ({saveEmployee: (employee) => dispatch(saveEmployee(employee))});
 
 export default connect(null, mapDispatchToProps)(EmployeeRow);
