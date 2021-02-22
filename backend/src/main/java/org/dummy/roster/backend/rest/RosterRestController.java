@@ -2,9 +2,6 @@ package org.dummy.roster.backend.rest;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.logging.Level;
-
-import org.dummy.roster.backend.entity.EmployeeE;
 import org.dummy.roster.backend.repo.EmployeeERepository;
 import org.dummy.roster.backend.utils.MathsUtils;
 import org.springframework.http.HttpStatus;
@@ -55,8 +52,8 @@ public class RosterRestController {
      * @return {@link List} {@link Employee}
      */
     @GetMapping
-    List<Employee> readAll() {
-        return (List<Employee>) employeeDAO.readAll();
+    public List<Employee> readAll() {
+        return employeeDAO.readAll();
     }
 
     /**
@@ -64,7 +61,7 @@ public class RosterRestController {
      * @return {@link List} {@link Employee}
      */
     @GetMapping(value = "/compare")
-    String compare() {
+    public String compare() {
         return employeeDAO.compare() + "\n" + this.springDataReadStats();
     }
 
@@ -75,7 +72,7 @@ public class RosterRestController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    Employee create(@RequestBody Employee employee) {
+    public Employee create(@RequestBody Employee employee) {
         return employeeDAO.create(employee);
     }
 
@@ -85,7 +82,7 @@ public class RosterRestController {
      * @return {@link Employee}
      */
     @PutMapping("/{id}")
-    Employee update(@PathVariable Long id, @RequestBody Employee employee) {
+    public Employee update(@PathVariable Long id, @RequestBody Employee employee) {
         employee.setId(id);
         return employeeDAO.update(employee);
     }
@@ -95,7 +92,7 @@ public class RosterRestController {
      * @return {@link ResponseEntity}
      */
     @DeleteMapping
-    void deleteAll() {
+    public void deleteAll() {
         employeeDAO.deleteAll();
     }
 

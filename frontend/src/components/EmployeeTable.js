@@ -20,7 +20,7 @@ class TableHeader extends Component {
                 </thead>
         )
     }
-};
+}
 
 class EmployeeTable extends Component {
 
@@ -41,7 +41,7 @@ class EmployeeTable extends Component {
             </table>
         )
     }
-};
+}
 
 const mapStateToProps = (state) => ({employees: state.employees});
 

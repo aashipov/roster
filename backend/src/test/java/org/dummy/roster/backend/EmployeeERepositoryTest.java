@@ -43,12 +43,14 @@ public class EmployeeERepositoryTest {
     /**
      * {@link Test} {@link EmployeeERepository#findById(Object)}.
      */
+    @SuppressWarnings("java:S2699")
     @Test
     public void readTest() {
         EmployeeE found = employeeRepository.findById(TestUtils.DUMMY_EMPLOYEE_E.getId()).get();
         TestUtils.reassureE(found);
     }
 
+    @SuppressWarnings("java:S2699")
     @Test
     public void selectComparison() {
         long[] jpa = new long[MathsUtils.SAMPLE_SIZE];

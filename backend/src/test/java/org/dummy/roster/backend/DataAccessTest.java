@@ -68,6 +68,7 @@ public class DataAccessTest {
         assertEquals(DUMMY_EMPLOYEE.getSalary().getAmount(), found.get(0).getSalary().getAmount());
     }
 
+    @SuppressWarnings("java:S2699")
     @Test
     public void selectComparison() {
         long[] springJdbc = new long[MathsUtils.SAMPLE_SIZE];

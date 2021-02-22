@@ -18,6 +18,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import javax.sql.DataSource;
+
 import static org.dummy.roster.backend.utils.MathsUtils.PLUS_MINUS_SIGN;
 
 @Repository
@@ -60,12 +62,15 @@ public class EmployeeDAO {
     }
 
     public List<Employee> readAll2() {
-        try (Connection conn = namedParameterJdbcTemplate.getJdbcTemplate().getDataSource().getConnection();
-        Statement stmt = conn.createStatement()) {
-            ResultSet rs = stmt.executeQuery(SELECT_ALL);
-            return readEmployees(rs);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        DataSource ds = namedParameterJdbcTemplate.getJdbcTemplate().getDataSource();
+        if (null != ds) {
+            try (Connection conn = ds.getConnection();
+                 Statement stmt = conn.createStatement()) {
+                ResultSet rs = stmt.executeQuery(SELECT_ALL);
+                return readEmployees(rs);
+            } catch (SQLException e) {
+                throw new IllegalStateException(e);
+            }
         }
         return Collections.emptyList();
     }
@@ -124,12 +129,18 @@ public class EmployeeDAO {
             KeyHolder idHolder = new GeneratedKeyHolder();
             SqlParameterSource sqlParams = new MapSqlParameterSource(employee(employee));
             namedParameterJdbcTemplate.update(CREATE_EMPLOYEE, sqlParams, idHolder, new String[]{ID});
-            employee.setId(idHolder.getKey().longValue());
+            Number id = idHolder.getKey();
+            if (null != id) {
+                employee.setId(id.longValue());
+            }
 
             sqlParams = new MapSqlParameterSource(salary(employee.getSalary()));
             idHolder = new GeneratedKeyHolder();
             namedParameterJdbcTemplate.update(CREATE_SALARY, sqlParams, idHolder, new String[]{ID});
-            employee.getSalary().setId(idHolder.getKey().longValue());
+            id = idHolder.getKey();
+            if (null != id) {
+                employee.getSalary().setId(id.longValue());
+            }
         }
         return employee;
     }

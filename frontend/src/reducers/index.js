@@ -1,11 +1,11 @@
 import {ADD_EMPLOYEE, DELETE_ALL, GET_ALL_EMPLOYEES, UDATE_EMPLOYEE} from '../constants';
 import {combineReducers} from "redux";
 
-const employees = (state = [], action) => {
+const employees = (action, state = []) => {
     switch (action.type) {
         case GET_ALL_EMPLOYEES : {
             return Object.assign([], state, action.employees);
-        };
+        }
         case ADD_EMPLOYEE :
             return [
                 ...state,
@@ -18,10 +18,10 @@ const employees = (state = [], action) => {
                 }
             });
             return state;
-        };
+        }
         case DELETE_ALL : {
             return [];
-        };
+        }
         default:
             return state;
     }
