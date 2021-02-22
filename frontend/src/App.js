@@ -9,6 +9,6 @@ const App = () => (
         <EmployeeList/>
         <DeleteAll/>
     </div>
-)
+);
 
 export default App
