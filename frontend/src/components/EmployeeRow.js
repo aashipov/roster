@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {connect} from "react-redux";
 import {saveEmployee} from "../actions";
 
 /**
  * Строка таблицы Сотрудники.
  */
-class EmployeeRow extends Component {
+class EmployeeRow extends React.Component {
 
     constructor(props) {
         super(props);

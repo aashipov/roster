@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import Employee from "./EmployeeRow";
 import {fetchAllEmployees} from "../actions";
@@ -7,7 +7,7 @@ import {fetchAllEmployees} from "../actions";
  * Таблица Сотркдники.
  */
 
-class TableHeader extends Component {
+class TableHeader extends React.Component {
     render() {
         return (
             <h3>Оклады сотрудников</h3>,
@@ -22,7 +22,7 @@ class TableHeader extends Component {
     }
 }
 
-class EmployeeTable extends Component {
+class EmployeeTable extends React.Component {
 
     constructor(props) {
         super(props);
