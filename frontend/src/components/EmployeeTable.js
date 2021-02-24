@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import Employee from "./EmployeeRow";
 import {fetchAllEmployees} from "../actions";
+import EmployeeRow from "./EmployeeRow";
 
 /**
  * Таблица Сотркдники.
@@ -37,7 +37,9 @@ class EmployeeTable extends React.Component {
         return (
             <table>
                 <TableHeader/>
-                <tbody>{employees.map((employee, index) => <Employee key={index} employee={employee}/>)}</tbody>
+                <tbody>
+                {employees.map((employee, index) => <EmployeeRow key={index} employee={employee}/>)}
+                </tbody>
             </table>
         )
     }
