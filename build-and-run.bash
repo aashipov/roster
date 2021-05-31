@@ -8,7 +8,7 @@ CONTAINER_NAME=roster
 
 docker build --file=Dockerfile --tag=${IMAGE}:latest --tag=${IMAGE}:${TOP_COMMIT} --tag=${IMAGE}:${CURRENT_BRANCH} .
 source ./down.bash
-docker run -d --name=${CONTAINER_NAME} --hostname=${CONTAINER_NAME} -p 8080:8080 ${CONTAINER_NAME}
+docker run -d --name=${CONTAINER_NAME} --hostname=${CONTAINER_NAME} -p 8080:8080 ${IMAGE}:${TOP_COMMIT}
 docker push ${IMAGE}:latest
 docker push ${IMAGE}:${TOP_COMMIT}
 docker push ${IMAGE}:${CURRENT_BRANCH}
